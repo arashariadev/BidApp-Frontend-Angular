@@ -12,6 +12,7 @@ import { AdminComponent } from '@app/dashboard/admin/admin.component';
 import { UserUpdateByAdminComponent } from '@app/dashboard/admin/user-update-by-admin/user-update-by-admin.component';
 import { EventCreateComponent } from '@app/dashboard/events/event-create/event-create.component';
 import { CanAuctionGuardService } from '@app/services/can-auction-guard.service';
+import { ProfileUpdateComponent } from '@app/dashboard/profile/profile-update/profile-update.component';
 
 const routes: Routes = [
   {'path':'',redirectTo:'/events',pathMatch:'full'},
@@ -40,5 +41,6 @@ export const RoutingComponent=[RegisterComponent,
   PageNotFoundComponent,
   AdminComponent,
   UserUpdateByAdminComponent,
-  EventCreateComponent
+  EventCreateComponent,
+  ProfileUpdateComponent
   ]

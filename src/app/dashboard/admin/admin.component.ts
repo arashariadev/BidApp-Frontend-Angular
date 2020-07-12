@@ -3,6 +3,7 @@ import { AuthService } from '@app/services/auth.service';
 import { User } from '@app/classes/user';
 import { Profile } from '@app/classes/profile';
 import { ShareUserService } from '@app/services/share-user.service';
+import { UserService } from '@app/services/user.service';
 
 @Component({
   selector: 'app-admin',
@@ -19,7 +20,7 @@ public username:string=null;
 public user:User;
 public error:string;
 public is_staff:boolean=false;
-  constructor(private authService:AuthService,private shareUser:ShareUserService) {
+  constructor(private userService:UserService,private shareUser:ShareUserService) {
     this.user=new User(new Profile());
    }
 
@@ -30,7 +31,7 @@ public is_staff:boolean=false;
   onSearch(){
     this.updateTable=false;
     //getting user from http request
-    this.authService.getUserByUsername(this.username).subscribe(resp=>{this.user=resp.body
+    this.userService.getUserByUsername(this.username).subscribe(resp=>{this.user=resp.body
     this.showTable=true;//table is displayed on successfully receiving user
     
   },error=>{this.error=error;
@@ -48,7 +49,7 @@ onClickUpdateUser(){
 
 deleteUser(){
   alert("are you sure want to delete the user...use popup instead of alert");//:))
-  this.authService.deleteUserByAdmin(this.username).subscribe(resp=>{
+  this.userService.deleteUserByAdmin(this.username).subscribe(resp=>{
     
     if(resp.status==204){
       alert("user deleted");

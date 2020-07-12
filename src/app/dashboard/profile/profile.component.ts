@@ -15,6 +15,7 @@ declare let Email: any;
 export class ProfileComponent implements OnInit {
   //to store user details
   user:User
+  public show_update_form:boolean=false;
 
   constructor(private authService:AuthService,private router:Router,private route:ActivatedRoute,private shareUser:ShareUserService) { }
 
@@ -22,6 +23,15 @@ export class ProfileComponent implements OnInit {
     //getting complete user from this service-->returns behavior subject 'user'
       this.shareUser.getUser().subscribe(resp=>this.user=resp);
   }
+
+
+
+  updateProfile(){
+
+    this.show_update_form=true;
+  }
+
+
 //take request from user to be abidder and auctioneer
   user_request(username,request_type){
     let value:string;

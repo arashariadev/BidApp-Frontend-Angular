@@ -1,6 +1,5 @@
 <div class="container">
   <div class="container-fluid">
-<button class="btn btn-primary" (click)="refreshProfile()">Refresh Profile</button>
     <div class="row row-cols-1 row-cols-md-2">
       <div class="col mb-4">
         <div class="card text-white bg-dark mb-3">
@@ -9,16 +8,11 @@
             <h5 class="card-title">{{user.first_name+" "+user.last_name|titlecase}}</h5>
             <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
             <p class="card-text">{{user.profile.bio| titlecase}}</p>
-            <p class="card-text">
-              <ng-container *ngIf="!user.profile.is_bidder">
-                <button class="btn btn-primary" (click)="user_request(user.first_name,'bid')">Register as Bidder</button>
-              </ng-container>
+            <p class="card-text"><button class="btn btn-primary" (click)="refreshProfile()">Refresh Profile</button>
             </p>
-            <p class="card-text">
-              <ng-container *ngIf="!user.profile.is_auctioneer">
-                <button class="btn btn-primary" (click)="user_request(user.username,'auction')">Register as Auctioneer</button>
-              </ng-container>
-            </p>
+            <p class="card-text"><button class="btn btn-primary" (click)="updateProfile()">Update Profile</button></p>
+            
+            
           </div>
         </div>
 
@@ -75,11 +69,23 @@
            
           </tbody>
         </table>
+        <ng-container *ngIf="!user.profile.is_bidder">
+          <button class="btn btn-primary" (click)="user_request(user.first_name,'bid')">Register as Bidder</button>
+        </ng-container>
+      
+    
+        <ng-container *ngIf="!user.profile.is_auctioneer">
+          <button class="btn btn-primary" (click)="user_request(user.username,'auction')">Register as Auctioneer</button>
+        </ng-container>
       </div>
      </div>
 
 
-    
+    <!--User update form if he clicks on 'update profile' button-->
+    <ng-container *ngIf="show_update_form">
+      <!--Pprofile update component-->
+      <app-profile-update [user]="user"></app-profile-update>
+    </ng-container>
    
 
   
