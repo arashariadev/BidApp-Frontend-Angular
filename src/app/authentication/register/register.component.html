@@ -1,0 +1,133 @@
+<div class="container">
+    <div class="container-fluid">
+    
+    <h1>Register form</h1>
+    <hr>
+   
+    
+  <form #register="ngForm" (ngSubmit)="onSubmit()" novalidate>
+  
+    <!--form is valid ?{{register.form.valid}}//to check form is valid-->
+    
+  <div class="form-group">
+    <label for="uname_id">UserName</label>
+      <input type="text" id="uname_id" name="username" class="form-control" required  pattern="\S{3,30}" minlength="3" maxlength="30" [(ngModel)]="user.username" #uname="ngModel" [class.is-invalid]="uname.touched && uname.invalid">
+    <div *ngIf="uname.errors && uname.touched">
+      <small class="text-danger" *ngIf="uname.errors.required">Username is required</small>
+      <small class="text-danger" *ngIf="uname.errors.maxlength">Username should be of max 30 chars</small>
+      <small class="text-danger" *ngIf="uname.errors.minlength">Username should be of min 3 chars</small>
+      <small class="text-danger" *ngIf="uname.errors.pattern && (!uname.errors.maxlength && !uname.errors.minlength) ">No whitespaces</small>
+
+    </div>
+    </div>
+  
+  <div class="form-group">
+    <label for="email_id">Email</label>
+    <input type="email" name="email" [(ngModel)]="user.email"  required maxlength="50" pattern="\S{1,40}@gmail\.com$" id="email_id" class="form-control" #email="ngModel" [class.is-invalid]="email.touched && email.invalid">
+    <div *ngIf="email.errors && email.touched">
+      <small class="text-danger" *ngIf="email.errors.required">Email is required</small>
+      <small class="text-danger" *ngIf="email.errors.maxlength">Email should be of max 50 chars</small>
+      <small class="text-danger" *ngIf="email.errors.pattern && (!email.errors.maxlength) ">Email should end with '@gmail.com' and should not contain white spaces</small>
+
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="pass_id">Password</label>
+    <input type="password" name="password" [(ngModel)]="user.password"  pattern="\S{8,30}" required minlength="8" maxlength="30" id="pass_id" class="form-control" #pass="ngModel" [class.is-invalid]="pass.touched && pass.invalid">
+    <div *ngIf="pass.errors && pass.touched">
+      <small class="text-danger" *ngIf="pass.errors.minlength">Password should be of min 8 chars</small>
+      <small class="text-danger" *ngIf="pass.errors.required">Password is required</small> 
+      <small class="text-danger" *ngIf="pass.errors.maxlength">Password should be of max 30 chars</small>
+      <small class="text-danger" *ngIf="pass.errors.pattern && (!pass.errors.maxlength && !pass.errors.minlength) ">No whitespaces</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="conf_pass_id">Confirm Password</label>
+    <input type="password" name="conf_pass" id="conf_pass_id" #conf_pass="ngModel" class="form-control" [(ngModel)]="user.confirm_password" required>
+    <div *ngIf="pass.touched && !pass.errors">
+      <small class="text-danger" *ngIf="pass.value!=conf_pass.value">Both passwords should be same</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="fname_id">FirstName</label>
+    <input type="text" name="first_name" [(ngModel)]="user.first_name"  minlength="3" maxlength="30" pattern="\S{3,30}"  required id="fname_id" class="form-control" #fname="ngModel" [class.is-invalid]="fname.touched && fname.invalid">
+    <div *ngIf="fname.errors && fname.touched">
+      <small class="text-danger" *ngIf="fname.errors.required">FirstName is required</small>
+      <small class="text-danger" *ngIf="fname.errors.minlength">FirstName should be of min 3 chars</small>
+      <small class="text-danger" *ngIf="fname.errors.maxlength">FirstName should be of max 30 chars</small>
+      <small class="text-danger" *ngIf="fname.errors.pattern && (!fname.errors.maxlength && !fname.errors.minlength) "> No Whitespaces</small>
+
+    </div>
+  
+  </div>
+
+  <div class="form-group">
+    <label for="lname_id">LastName</label>
+    <input type="text" name="last_name" [(ngModel)]="user.last_name"  required minlength="3" maxlength="30" pattern="\S{3,30}" id="lname_id" class="form-control" #lname="ngModel" [class.is-invalid]="lname.touched && lname.invalid">
+    <div *ngIf="lname.errors && lname.touched">
+      <small class="text-danger" *ngIf="lname.errors.required">LastName is required</small>
+      <small class="text-danger" *ngIf="lname.errors.minlength">LastName should be of min 3 chars</small>
+      <small class="text-danger" *ngIf="lname.errors.maxlength">LastName should be of max 30 chars</small>
+      <small class="text-danger" *ngIf="lname.errors.pattern && (!lname.errors.maxlength && !lname.errors.minlength) ">No Whitespaces</small>
+
+    </div>
+  
+  </div>
+
+  <div ngModelGroup="profile">
+  <div class="form-group">
+    <label for="addr_id">Address</label>
+    <input type="text" class="form-control" id="addr_id" name="address" [(ngModel)]="user.profile.address" required  minlength="10" maxlength="100" #addr="ngModel" [class.is-invalid]="addr.touched && addr.invalid"> 
+    <div *ngIf="addr.errors && addr.touched">
+      <small class="text-danger" *ngIf="addr.errors.required">Address is required</small>
+      <small class="text-danger" *ngIf="addr.errors.minlength">Address should be of min 10 chars</small>
+      <small class="text-danger" *ngIf="addr.errors.maxlength">Address should be of max 100 chars</small>
+    </div>
+  
+  </div>
+  
+  <div class="form-group">
+    <label for="pin_id">Pincode</label>
+    <input type="text" class="form-control" id="pin_id" pattern="^[1-9][0-9]{5}$" name="pincode" [(ngModel)]="user.profile.pincode" required #pin="ngModel" [class.is-invalid]="pin.touched && pin.invalid">
+  <div *ngIf="pin.errors && pin.touched">
+    <small class="text-danger" *ngIf="pin.errors.required">Pincode is required</small>
+    <small class="text-danger" *ngIf="pin.errors.pattern">Pincode must be of six digits starting with [1-9]</small>
+  
+  </div>
+  </div>
+
+  <div class="form-group">
+    <label for="contact_id">Contact No</label>
+    <input type="text" class="form-control" id="contact_id" name="contact_no" [(ngModel)]="user.profile.contact_no" required pattern="^[1-9][0-9]{9}$" #phone="ngModel" [class.is-invalid]="phone.touched && phone.invalid"> 
+    <div *ngIf="phone.errors && phone.touched">
+      <small class="text-danger" *ngIf="phone.errors.required">Contact No is required</small>
+      <small class="text-danger" *ngIf="phone.errors.pattern">Contact No must be of ten digits starting with [1-9]</small>
+    
+    </div>
+  
+  </div>
+
+  <div class="form-group">
+    <label for="bio_id">Bio</label>
+    <input type="text" class="form-control" id="bio_id" name="bio" [(ngModel)]="user.profile.bio" maxlength="100" #bio="ngModel" [class.is-invalid]="bio.touched && bio.invalid"> 
+    <div *ngIf="bio.errors && bio.touched">
+      <small class="text-danger" *ngIf="bio.errors.maxlength"> Bio should be of max 100 chars</small>
+    
+    </div>
+  
+  </div>
+
+  </div>
+  
+  <!--disable button if frm is invalid or password and conf. password value doesn't match-->
+  <button [disabled]="register.form.invalid || pass.value!=conf_pass.value" class="btn btn-primary" type="submit" >Submit</button>
+  
+  
+  </form>
+  
+  </div>
+  
+</div>

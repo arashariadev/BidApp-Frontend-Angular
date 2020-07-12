@@ -1,0 +1,84 @@
+
+<div class="container">
+    <div class="container-fluid">
+    
+    <h1>Create Event</h1>
+    <hr>
+    <!--Event create form   client side validations for start date and deadline -->
+  <form #eventCreate="ngForm" (ngSubmit)="onSubmit()">
+  
+    
+  <div class="form-group">
+    <label for="startdate_id">Start Date</label>
+      <input type="datetime-local" id="startdate_id" name="startdate" class="form-control" required  [(ngModel)]="event.start_date" #startdate="ngModel">
+      <div *ngIf="startdate.errors && startdate.touched">
+        <small class="text-danger" *ngIf="startdate.errors.required">Start date is required</small>
+  
+      </div>
+      <!--if start date is valid-->
+      <small class="text-danger" *ngIf="!is_start_date_valid">Start date should be atleast 30 hours from now</small>
+    </div>
+
+    <div class="form-group">
+        <label for="deadline_id">Deadline</label>
+          <input type="datetime-local" id="deadline_id" name="deadline" class="form-control" required  [(ngModel)]="event.deadline" #deadline="ngModel">
+          <div *ngIf="deadline.errors && deadline.touched">
+            <small class="text-danger" *ngIf="deadline.errors.required">Deadline is required</small>
+      
+          </div>
+          <!--if deadline is valid-->
+          <small class="text-danger" *ngIf="!is_deadline_valid">Deadlline should be atleast 2 hours ahead from start date</small>
+
+        </div>
+
+        <div class="form-group">
+            <label for="baseprice_id">Base Price</label>
+              <input type="number" id="baseprice_id" name="baseprice" class="form-control" required [(ngModel)]="event.base_price" #baseprice="ngModel">
+            <div *ngIf="baseprice.errors && baseprice.touched">
+              <small class="text-danger" *ngIf="baseprice.errors.required">Base price is required</small>
+        
+            </div>
+            <div *ngIf="is_error" class="text-danger">Base price should be greater than 1 and less than or equal to 1 crore</div>
+            </div>
+        <div ngModelGroup="product">
+            <div class="form-group">
+                <label for="pname_id">Product Name</label>
+                <input type="text" class="form-control" id="pname_id" name="product_name" [(ngModel)]="event.product.name" required  minlength="3" maxlength="50" #pname="ngModel" [class.is-invalid]="pname.touched && pname.invalid"> 
+                <div *ngIf="pname.errors && pname.touched">
+                    <small class="text-danger" *ngIf="pname.errors.required">Product name is required</small>
+                    <small class="text-danger" *ngIf="pname.errors.minlength">Product name should be of min 3 chars</small>
+                    <small class="text-danger" *ngIf="pname.errors.maxlength">Product name should be of max 50 chars</small>
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <label for="category_id">Category</label>
+                <input type="text" class="form-control" id="category_id" name="category" [(ngModel)]="event.product.category" required  minlength="3" maxlength="50" #category="ngModel" [class.is-invalid]="category.touched && category.invalid"> 
+                <div *ngIf="category.errors && category.touched">
+                    <small class="text-danger" *ngIf="category.errors.required">Category is required</small>
+                    <small class="text-danger" *ngIf="category.errors.minlength">Category should be of min 3 chars</small>
+                    <small class="text-danger" *ngIf="category.errors.maxlength">Category should be of max 50 chars</small>
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <label for="desc_id">Description</label>
+                <input type="text" class="form-control" id="desc_id" name="desc" [(ngModel)]="event.product.description" required  minlength="3" maxlength="100" #desc="ngModel" [class.is-invalid]="desc.touched && desc.invalid"> 
+                <div *ngIf="desc.errors && desc.touched">
+                    <small class="text-danger" *ngIf="desc.errors.required">Description is required</small>
+                    <small class="text-danger" *ngIf="desc.errors.minlength">Description should be of min 3 chars</small>
+                    <small class="text-danger" *ngIf="desc.errors.maxlength">Description should be of max 100 chars</small>
+                </div>
+                
+            </div>
+
+
+        </div>
+
+        <button type="submit" [disabled]="eventCreate.form.invalid" class="btn btn-primary">Submit</button>
+    </form>
+
+
+
+    </div>
+    </div>

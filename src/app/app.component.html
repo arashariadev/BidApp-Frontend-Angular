@@ -1,0 +1,73 @@
+<header>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a routerLink="/events" class="navbar-brand mb-0  h1 active">GRAB IT</a>
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+ <!--if user is currently not logged in-->
+  <div  class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto" *ngIf="!logged_in_user['loginStatus']">
+      
+      <li class="nav-item" >
+        <a routerLink="/login" class="nav-link navbar-brand mb-0 h1 active">Login</a>  
+    </li>
+      <li class="nav-item" >
+        <a class="nav-link navbar-brand mb-0 h1 active" routerLink="/register">Register</a>
+      </li>
+    </ul>
+    <!--if user is logged in-->
+      <ul class="navbar-nav mr-auto" *ngIf="logged_in_user['loginStatus']">
+      <li class="nav-item active" >
+        <span class="nav-link navbar-brand mb-0 h1 active" >Welcome {{user.username}}</span>
+      </li>
+
+      <li class="nav-item active">
+        <a routerLink="/profile" class="nav-link navbar-brand mb-0 h1 active">Profile</a>    
+        </li>
+        <li class="nav-item active">
+          <a routerLink="/login" class="nav-link navbar-brand mb-0 h1 active">Logout</a>    
+      </li>
+
+      <li class="nav-item dropdown" >
+        
+        <a class="nav-link navbar-brand mb-0 h1 active dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</a>
+        <div class="dropdown-menu bg-dark" aria-labelledby="dropdown01">
+          <a class="nav-link navbar-brand mb-0 h1 active" routerLink="/events">My Events</a>
+          <a class="nav-link navbar-brand mb-0 h1 active" routerLink="/create-event">Create Event</a>
+          <a class="nav-link navbar-brand mb-0 h1 active" routerLink="/events">Something else here</a>
+        </div>
+      </li>
+      
+      
+
+      </ul>
+    
+    
+   
+    
+    <form class="form-inline my-2 my-lg-0">
+      <a routerLink="/admin" ><span class="nav-link navbar-brand mb-0 h1 active">Admin</span></a>
+      <span class="nav-link navbar-brand mb-0 h1 active">{{logged_in_user["expiration"]|date:'medium'}}</span>
+      <input class="form-control mr-sm-2" type="search" placeholder="search to reload events" aria-label="Search">
+      <button class="btn btn-secondary my-2 my-sm-0" (click)="refreshEvents()">Search</button>
+    </form>
+  </div>
+</nav>
+</header>
+<main role="main">
+  <div class="album py-5 bg-light">
+    <div class="container">  
+<router-outlet></router-outlet>
+</div>
+</div>
+</main>
+
+<footer class="text-muted">
+  <div class="container">
+    <p class="float-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+    <p>New to Bootstrap? <a href="https://getbootstrap.com/">Visit the homepage</a> or read our <a href="../getting-started/introduction/">getting started guide</a>.</p>
+  </div>
+</footer>

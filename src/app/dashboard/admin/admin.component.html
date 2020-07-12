@@ -1,0 +1,128 @@
+<div class="container">
+
+    <div class="container-fluid">
+        <div class="col mb-4">
+            <div class="card text-white bg-dark mb-3">
+              <!--search user by admin with 'username' field-->
+              <div class="card-body">
+                <h5 class="card-title">Search User</h5>
+                <div  class="card-text">
+                    <form #searchUser="ngForm" (ngSubmit)="onSearch()">
+                        <div class="form-group">
+                            <label for="username_id">Username:</label>
+                            <input type="text"  name="user" pattern="^\S{3,30}$"  #uname="ngModel"  required [(ngModel)]="username" id="username_id" class="form-control" >
+                            <div *ngIf="uname.touched && uname.errors">
+                            <small class="text-danger" *ngIf="uname.errors.required">Username is required</small>
+                            <small class="text-danger" *ngIf="uname.errors.maxlength">Username should be of max 30 chars</small>
+                            <small class="text-danger" *ngIf="uname.errors.minlength">Username should be of min 3 chars</small>
+                            <small class="text-danger" *ngIf="uname.errors.pattern && (!uname.errors.maxlength && !uname.errors.minlength) ">No whitespaces</small>
+                          </div>
+                          </div>
+                        <button type="submit" [disabled]="uname.errors" class="btn btn-primary">Search</button>
+                    </form>
+                </div>
+                
+                
+                
+              </div>
+            </div>
+    
+          </div>
+        <!--show user profile   showed only when admin clicks on search user-->
+        <ng-container  *ngIf="showTable">
+          <div class="row row-cols-1 row-cols-md-2">
+            <div class="col mb-4">
+              <div class="card text-white bg-dark mb-3">
+                <img src="{{user.profile.image}}" class="card-img-top" alt="My Profile">
+                <div class="card-body">
+                  <h5 class="card-title">{{user.first_name+" "+user.last_name|titlecase}}</h5>
+                  <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text">{{user.profile.bio| titlecase}}</p>    
+                  <p class="card-text">
+                    
+                    <button class="btn btn-primary" (click)="onClickUpdateUser()">Update User</button>
+                  </p>
+                  <p class="card-text">
+                    <ng-container *ngIf="!isAdmin()">
+                    <button class="btn btn-primary" (click)="deleteUser()">Delete User</button>
+                  </ng-container>
+                  </p>
+              </div>
+
+              </div>
+            </div>
+          <!--Show user table-->
+          <div class="col mb-4">
+            <div class="card text-white bg-dark mb-3">
+            <table class="table table-hover table-dark ">
+              <thead>
+                <tr>
+                  <th scope="col">User Details:</th>
+                
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Username</th>
+                  <td>{{user.username}}</td>
+                  
+                </tr>
+                
+                <tr>
+                  <th scope="row">Email</th>
+                  <td>{{user.email}}</td>
+                  
+                </tr>
+                <tr>
+                    <th scope="row">First Name</th>
+                    <td>{{user.first_name}}</td>
+                    
+                  </tr>
+                  <tr>
+                    <th scope="row">Last Name</th>
+                    <td>{{user.last_name}}</td>
+                    
+                  </tr>
+
+                <tr>
+                  <th scope="row">Contact No</th>
+                  <td>{{user.profile.contact_no}}</td>
+                  
+                </tr>
+                <tr>
+                  <th scope="row">Address</th>
+                  <td>{{user.profile.address}}</td>
+                  
+                </tr>
+               
+                <tr>
+                  <th scope="row">Auctioneer</th>
+                  <td>{{user.profile.is_auctioneer}}</td>
+                  
+                </tr>
+                <tr>
+                  <th scope="row">Bidder</th>
+                  <td>{{user.profile.is_bidder}}</td>
+                  
+                </tr>
+          
+                <tr>
+                  <th scope="row">Pincode</th>
+                  <td>{{user.profile.pincode}}</td>
+                  
+                </tr>
+               
+              </tbody>
+            </table>
+           
+            </div>
+            </div>
+          </div>
+          </ng-container>
+<!--User update form by admin when admin clicks update-->
+          <ng-container *ngIf="updateTable">
+            <!--passing data from parent to child component-->
+          <app-user-update-by-admin [updated_user]="user"></app-user-update-by-admin>
+        </ng-container>
+    </div>
+</div>

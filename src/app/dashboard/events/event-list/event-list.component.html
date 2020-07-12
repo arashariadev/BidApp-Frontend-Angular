@@ -1,0 +1,27 @@
+    <div class="container">
+    <div class="container-fluid">
+    
+    <div class="row row-cols-1 row-cols-md-3">
+      <ng-container  *ngFor="let event of eventListObject.event_list">
+     
+        <div class="col mb-4">
+          <div class="card text-white bg-dark mb-3">
+            <div class="card-header"><h5>Event Id&nbsp;:&nbsp;{{event.id}}</h5></div>
+            <a routerLink="/events/{{event.id}}" ><img src="{{event.product.image}}" class="card-img-top" alt="{{event.product.category}}"></a>
+            <div class="card-body">
+              <h5 class="card-title">{{event.product.name  | titlecase}}</h5>
+              <p class="card-text">Start Date&nbsp;:&nbsp;{{event.start_date|date:'medium'}}</p>
+              <p class="card-text">Base Price&nbsp;:&nbsp;{{event.base_price}}</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">{{event.product.description | titlecase}}</small>
+            </div>
+          </div>
+        </div>
+
+    </ng-container>
+    </div>
+    
+  
+    </div>
+    </div>

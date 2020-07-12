@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="container-fluid">
+<button class="btn btn-primary" (click)="refreshProfile()">Refresh Profile</button>
+    <div class="row row-cols-1 row-cols-md-2">
+      <div class="col mb-4">
+        <div class="card text-white bg-dark mb-3">
+          <img src="{{user.profile.image}}" class="card-img-top" alt="My Profile">
+          <div class="card-body">
+            <h5 class="card-title">{{user.first_name+" "+user.last_name|titlecase}}</h5>
+            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <p class="card-text">{{user.profile.bio| titlecase}}</p>
+            <p class="card-text">
+              <ng-container *ngIf="!user.profile.is_bidder">
+                <button class="btn btn-primary" (click)="user_request(user.first_name,'bid')">Register as Bidder</button>
+              </ng-container>
+            </p>
+            <p class="card-text">
+              <ng-container *ngIf="!user.profile.is_auctioneer">
+                <button class="btn btn-primary" (click)="user_request(user.username,'auction')">Register as Auctioneer</button>
+              </ng-container>
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col mb-4">
+
+        <table class="table table-hover table-dark ">
+          <thead>
+            <tr>
+              <th scope="col">User Details:</th>
+            
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Username</th>
+              <td>{{user.username}}</td>
+              
+            </tr>
+            
+            <tr>
+              <th scope="row">Email</th>
+              <td>{{user.email}}</td>
+              
+            </tr>
+            <tr>
+              <th scope="row">Contact No</th>
+              <td>{{user.profile.contact_no}}</td>
+              
+            </tr>
+            <tr>
+              <th scope="row">Address</th>
+              <td>{{user.profile.address}}</td>
+              
+            </tr>
+           
+            <tr>
+              <th scope="row">Auctioneer</th>
+              <td>{{user.profile.is_auctioneer}}</td>
+              
+            </tr>
+            <tr>
+              <th scope="row">Bidder</th>
+              <td>{{user.profile.is_bidder}}</td>
+              
+            </tr>
+      
+            <tr>
+              <th scope="row">Pincode</th>
+              <td>{{user.profile.pincode}}</td>
+              
+            </tr>
+           
+          </tbody>
+        </table>
+      </div>
+     </div>
+
+
+    
+   
+
+  
+
+</div>
+</div>
+

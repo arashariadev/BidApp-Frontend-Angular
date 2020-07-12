@@ -1,0 +1,89 @@
+
+
+<div class="container">
+  <div class="container-fluid">
+
+<table class="table table-hover table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Event Details:</th>
+       <!-- <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Handle</th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Id</th>
+        <td>{{event.id}}</td>
+        
+      </tr>
+
+      <tr>
+        <th scope="row">Date Added</th>
+        <td>{{event.date_added |date :'medium'}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Start Date</th>
+        <td>{{event.start_date|date :'medium'}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Deadline</th>
+        <td>{{event.deadline|date:'medium'}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Name</th>
+        <td>{{event.product.name}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Category</th>
+        <td>{{event.product.category}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Description</th>
+        <td>{{event.product.description}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Base Price</th>
+        <td>{{event.base_price}}</td>
+        
+      </tr>
+    </tbody>
+  </table>
+<ng-container *ngIf="can_bid && is_bidder">
+  <div class="col mb-4">
+    <div class="card text-white bg-dark mb-3">
+      <div class="card-body">
+        <p class="card-text">Want to place bid?</p>
+        <p class="card-text"><button class="btn btn-primary" (click)="onClick()">Yes</button></p>
+        <p class="card-text">
+          <ng-container *ngIf="take_bid">
+            
+              <form #register_bid="ngForm" (ngSubmit)="validate_bid()">
+                <div class="form-group">
+              <input type="number" name="bidprice" #bidprice="ngModel" class="form-control"  required [(ngModel)]="user_bidprice">
+            <div *ngIf="bidprice.errors && bidprice.touched">
+              <small *ngIf="bidprice.errors.required">Bid price is required</small>
+            </div>    
+            <div *ngIf="is_error">Minimum bid price is {{event.base_price}}. Max bid price is 10 crore</div>
+            </div>
+            <button [disabled]="register_bid.form.invalid" class="btn btn-primary">Place bid</button>
+            </form>
+            
+          </ng-container>
+        </p>
+        
+      </div>
+    </div>
+
+  </div>
+</ng-container>
+<button class="btn btn-primary" (click)="goBack()">Back</button>
+</div>
+</div>
