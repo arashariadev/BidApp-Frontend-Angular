@@ -52,6 +52,13 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
     )}
     }
 
+    updateProfileImage(formData:FormData,filename:string):Observable<HttpResponse<any>>{
+    return this.http.patch<any>(this.url+'profile/'+filename+'/',formData).pipe(
+      catchError(this.handleError)
+    )
+    }
+
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -65,7 +72,9 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
         `message was: ${error.message}` );
         if(error.status==0)
         return throwError("server error....contact admin!!!");
-        return throwError(error.error.detail);
+        else{
+          console.log("hello")
+        return throwError(error.error.detail);}
         
 
 }};

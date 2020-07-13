@@ -13,6 +13,8 @@ import { UserUpdateByAdminComponent } from '@app/dashboard/admin/user-update-by-
 import { EventCreateComponent } from '@app/dashboard/events/event-create/event-create.component';
 import { CanAuctionGuardService } from '@app/services/can-auction-guard.service';
 import { ProfileUpdateComponent } from '@app/dashboard/profile/profile-update/profile-update.component';
+import { ProfileImageComponent } from '@app/dashboard/profile/profile-image/profile-image.component';
+
 
 const routes: Routes = [
   {'path':'',redirectTo:'/events',pathMatch:'full'},
@@ -20,6 +22,7 @@ const routes: Routes = [
   {'path':'login',component:LoginComponent},
   {'path':'admin',component:AdminComponent,canActivate:[AdminGuardService]},
   {'path':'profile',component:ProfileComponent,canActivate:[AuthGuardService]},
+  {'path':'profile/image',component:ProfileImageComponent,canActivate:[AuthGuardService]},
   {'path':'events',component:EventListComponent},
   {'path':'create-event',component:EventCreateComponent,canActivate:[CanAuctionGuardService]},
   {'path':'events/:id',component:EventDetailComponent},
@@ -42,5 +45,6 @@ export const RoutingComponent=[RegisterComponent,
   AdminComponent,
   UserUpdateByAdminComponent,
   EventCreateComponent,
-  ProfileUpdateComponent
+  ProfileUpdateComponent,
+  ProfileImageComponent
   ]

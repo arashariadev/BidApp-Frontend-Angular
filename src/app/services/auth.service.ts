@@ -62,7 +62,7 @@ private setLoggedInUser(object:LoggedInUser){
     } else {
       console.error(
         `Backend returned code: ${error.status}, ` +
-        `body was:${error.error.global},`+//invalid credintials return {'global':......}
+        `body was:${error.error.detail},`+//invalid credintials return {'global':......}
         
         `message was: ${error.message}` );
       if(error.status==400)
@@ -71,7 +71,7 @@ private setLoggedInUser(object:LoggedInUser){
           if(error.status==0)
           return throwError("server error....contact admin!!!");
           if(error.status==401)
-        return throwError("you are not authorised...contact admin!!!");
+        return throwError(error.error.detail);
         if(error.status==404)
         return throwError("detail not found");
 }};

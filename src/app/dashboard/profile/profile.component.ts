@@ -21,7 +21,10 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     //getting complete user from this service-->returns behavior subject 'user'
-      this.shareUser.getUser().subscribe(resp=>this.user=resp);
+      this.shareUser.getUser().subscribe(resp=>{
+        this.user=resp;
+      console.log(this.user.profile.image)});
+      
   }
 
 

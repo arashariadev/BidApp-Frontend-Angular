@@ -1,0 +1,21 @@
+<div class="row row-cols-1 row-cols-md-2">
+  <div class="col mb-4">
+    <div class="card text-white bg-dark mb-3">
+    <img src="{{image_url}}" class="card-img-top" alt="My Profile">
+    <div class="card-body">
+    <p class="card-text"><button class="btn btn-primary" (click)="updateProfileImage()">Edit Photo</button></p>
+    <div class="card-text" *ngIf="want_to_update">
+     <form  (ngSubmit)="onSubmit()" class="form-group">
+    <div class="custom-file">
+    <input type="file" name="image" accept=".jpg,.jpeg"  required (change)="onFileSelect($event)">
+    <div *ngIf="is_error">Image size should be less than 1 Mb</div>
+  </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+   </form> 
+
+   </div>
+
+    </div>
+  </div>
+  </div>
+  </div>
