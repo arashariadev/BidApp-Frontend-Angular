@@ -1,8 +1,16 @@
     <div class="container">
     <div class="container-fluid">
     
+      <div class="card text-white bg-dark mb-3">
+        <div class="card-body">
+          <input type="datetime-local" name="inputdate" placeholder="filter events by date" required #inputdate="ngModel" [(ngModel)]="filter_date">
+          <p class="card-text"><button [disabled]="inputdate.errors" class="btn btn-primary" (click)="filtering(inputdate.value)">Filter</button></p>
+        </div>
+      </div>
+
     <div class="row row-cols-1 row-cols-md-3">
-      <ng-container  *ngFor="let event of eventListObject.event_list">
+
+      <ng-container  *ngFor="let event of filtered_set">
      
         <div class="col mb-4">
           <div class="card text-white bg-dark mb-3">

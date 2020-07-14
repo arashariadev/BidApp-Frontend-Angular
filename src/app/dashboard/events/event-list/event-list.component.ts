@@ -12,13 +12,22 @@ import { ShareEventNode } from '@app/classes/share-event-node';
 export class EventListComponent implements OnInit {
 
  public eventListObject:ShareEventNode;
+ public filtered_set:BidEvent[]=[]
+ public filter_date:Date=null;
   constructor(private eventService:EventService,public shareEvent:ShareEventService) { 
   
   }
 
   ngOnInit(): void {
     //obtaining all events from this service--->returns behavior subject containing events array
-    this.shareEvent.getShareEventNode().subscribe(value=>this.eventListObject=value);
+    this.shareEvent.getShareEventNode().subscribe(value=>{this.eventListObject=value;
+    this.filtered_set=this.eventListObject.event_list;
+    });
     console.log("displaying new list");
+  }
+
+  filtering(inputdate:Date){
+    this.filtered_set=this.eventListObject.event_list.filter(x=>x.start_date>=inputdate);
+
   }
 }
