@@ -85,7 +85,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   validate_bid(){
-if(this.user_bidprice>=this.event.base_price){
+if(this.user_bidprice>=this.event.base_price && this.user_bidprice<=100000000){
 
 const current_datetime=new Date();
 //storing time at which bid was placed -->for validation on server side
