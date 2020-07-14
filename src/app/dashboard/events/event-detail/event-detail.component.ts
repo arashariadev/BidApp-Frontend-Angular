@@ -7,6 +7,9 @@ import { ShareEventService } from '@app/services/share-event.service';
 import { ShareUserService } from '@app/services/share-user.service';
 import { BidService } from '@app/services/bid.service';
 import { Bid } from '@app/classes/bid';
+import { EventService } from '@app/services/event.service';
+import { User } from '@app/classes/user';
+import { Profile } from '@app/classes/profile';
 
 @Component({
   selector: 'app-event-detail',
@@ -23,8 +26,10 @@ export class EventDetailComponent implements OnInit {
   take_bid:boolean=false;//only if user say yes:))
   user_bidprice:number=null;
   is_error:boolean=false;
+  highest_bid:number=null;
+  highest_bid_user:User=new User(new Profile());
   constructor(private router:Router,private route:ActivatedRoute,private shareEvent:ShareEventService,
-    private authService:AuthService,private shareUser:ShareUserService,private bidService:BidService ) {
+    private authService:AuthService,private shareUser:ShareUserService,private bidService:BidService,private eventService:EventService ) {
   console.log("event detail:"+this.event);
    }
   
@@ -40,17 +45,20 @@ export class EventDetailComponent implements OnInit {
     this.shareEvent.getShareEventNode().subscribe(val=>{
       if(val.event_list.length!=0){
         this.event=val.event_list.filter(x=>x.id==this.event_id)[0];
-        console.log("helo..............")
+
         if(this.event!=null){//callback that is executed only after receiving event details
-          console.log("2");
+          this.authService.getLoggedInUser().subscribe(resp=>this.is_staff=resp["is_staff"])
+
           const current_datetime=Date.now()
           const parsed_start_date=this.parse_date(this.event.start_date);//converts in milliseconds since epoch
           const parsed_deadline=this.parse_date(this.event.deadline);
+
        if(current_datetime>=parsed_start_date && current_datetime<parsed_deadline){
-         console.log("3")
+
        this.can_bid=true;
        //getting 'is_bidder' property of currently logged in user
-      this.shareUser.getUser().subscribe(val=>this.is_bidder=val.profile["is_bidder"])
+      this.shareUser.getUser().subscribe(val=>this.is_bidder=val.profile["is_bidder"]    )
+      //will tell if user is admin
       console.log(this.is_bidder+" "+this.can_bid)
        }
         }
@@ -58,12 +66,18 @@ export class EventDetailComponent implements OnInit {
       }
       
     });
-    
 
- 
+  }
+  //delete event option for admin
+  deleteEvent(){
+    let answer=confirm("are you sure want to delete?");
 
+    if(answer){
+      console.log("in event component"+this.event_id)
 
-
+    this.eventService.deleteEventByAdmin(this.event_id).subscribe(resp=>
+      alert("successfully deleted"),error=>alert(error));
+    }
   }
 
   onClick(){
@@ -100,5 +114,11 @@ this.take_bid=false;
   }
   
   
+  getHighestBid(){
+    this.bidService.retrieveHighestBid(this.event_id).subscribe(resp=>
+      {this.highest_bid=resp.body["highest_bid"];
+    this.highest_bid_user=resp.body["user"];
+    },error=>alert(error))
+  }
 
 }

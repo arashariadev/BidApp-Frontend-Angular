@@ -58,6 +58,16 @@ export class EventService {
     }
   }
 
+  deleteEventByAdmin(event_id:number){
+    console.log("in event service"+event_id)
+    if(event_id!=null){
+      return this.http.delete(this.url+event_id+'/destroy/',
+      {headers: new HttpHeaders({'Content-Type': 'application/json'}),
+      observe:'response'}).pipe(catchError(this.handleError))
+    }
+
+  }
+
   
 
 }

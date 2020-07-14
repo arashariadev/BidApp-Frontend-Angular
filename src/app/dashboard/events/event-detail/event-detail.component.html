@@ -78,12 +78,22 @@
             
           </ng-container>
         </p>
-        
+        <p class="card-text"><button class="btn btn-primary" (click)="getHighestBid()">Get Highest Bid</button></p>
+        <p class="card-text">Current highest bid is&nbsp; {{highest_bid}}</p>
+        <p class="card-text">
+        <ng-container *ngIf="is_staff">
+         Highest bid User&nbsp;:&nbsp;{{highest_bid_user.username+"  "+highest_bid_user.profile.contact_no}}
+        </ng-container>
+      </p>
       </div>
     </div>
 
   </div>
 </ng-container>
+<ng-container *ngIf="is_staff">
+  <button class="btn btn-primary" (click)="deleteEvent()">Delete Event</button>
+</ng-container>
 <button class="btn btn-primary" (click)="goBack()">Back</button>
+
 </div>
 </div>
