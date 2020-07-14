@@ -1,15 +1,14 @@
 import { Component,OnInit } from '@angular/core';
 import {AuthService} from '@app/services/auth.service';
-import {throwError, BehaviorSubject} from 'rxjs';
 import {Router} from '@angular/router';
 import {ActivatedRoute} from '@angular/router';
 import { LoggedInUser } from '@app/classes/logged-in-user';
 import { BidEvent } from '@app/classes/bid-event';
 import { EventService } from '@app/services/event.service';
-import { ShareEventService } from './services/share-event.service';
-import { ShareEventNode } from './classes/share-event-node';
-import { ShareUserService } from './services/share-user.service';
-import { User } from './classes/user';
+import { ShareEventService } from '@app/services/share-event.service';
+import { ShareEventNode } from '@app/classes/share-event-node';
+import { ShareUserService } from '@app/services/share-user.service';
+import { User } from '@app/classes/user';
 
 @Component({
   selector: 'app-root',
