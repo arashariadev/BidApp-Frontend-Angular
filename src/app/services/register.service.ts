@@ -9,7 +9,7 @@ import { catchError, retry,map } from 'rxjs/operators';
 export class RegisterService {
   
 //url string
-  private url="http://127.0.0.1:8000/user/create/";
+  private url="https://sunil-bid-app.herokuapp.com/user/create/";
 
   constructor(private http:HttpClient) {
     

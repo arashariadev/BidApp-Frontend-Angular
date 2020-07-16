@@ -11,7 +11,7 @@ import { BidEvent } from '@app/classes/bid-event';
 export class EventService {
 
   
-  private url="http://127.0.0.1:8000/api/events/";
+  private url="https://sunil-bid-app.herokuapp.com/api/events/";
 
   constructor(private http:HttpClient) {
     
@@ -41,7 +41,6 @@ export class EventService {
 
 
   getEventList():Observable<HttpResponse<BidEventListAPI>>{
-    console.log("date"+new Date());
     return this.http.get<BidEventListAPI>(this.url,
     {headers: new HttpHeaders({'Content-Type': 'application/json'}),
     observe:'response'}).pipe(
@@ -59,7 +58,6 @@ export class EventService {
   }
 
   deleteEventByAdmin(event_id:number){
-    console.log("in event service"+event_id)
     if(event_id!=null){
       return this.http.delete(this.url+event_id+'/destroy/',
       {headers: new HttpHeaders({'Content-Type': 'application/json'}),

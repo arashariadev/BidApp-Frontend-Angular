@@ -51,7 +51,6 @@ export class LoginComponent implements OnInit {
     //clearing out session storage
       resp=>{sessionStorage.clear();//extra protection
         //storing access token received in session storage
-        console.log("token........"+resp.body["access"]);
         sessionStorage.setItem('token',resp.body["access"]);
 
       this.authService.updateData();

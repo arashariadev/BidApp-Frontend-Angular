@@ -21,7 +21,6 @@ export class UserUpdateByAdminComponent implements OnInit {
 
   updateUser(){
     //code for updating user
-    console.log(this.updated_user);
     this.userService.updateUserByAdmin(this.updated_user).subscribe(resp=>{
       alert("user is updated");
     },error=>{

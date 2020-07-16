@@ -14,14 +14,13 @@ import { catchError } from 'rxjs/operators';
 })
 export class AuthService {
  
-  private url:string="http://127.0.0.1:8000/";
+  private url:string="https://sunil-bid-app.herokuapp.com/";
   //behavior subject containing loginStatus, (expiration,is_staff and user_id)-->from token
  private subject=new BehaviorSubject<LoggedInUser>(new LoggedInUser());
   public errors: any;
  
   constructor(private http: HttpClient,private jwtHelper:JwtHelperService) {
     
-    console.log("in auth service constructor");
   }
 
   //returning logged in user

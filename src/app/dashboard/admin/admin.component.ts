@@ -48,7 +48,8 @@ onClickUpdateUser(){
 
 
 deleteUser(){
-  alert("are you sure want to delete the user...use popup instead of alert");//:))
+  let answer=confirm("are you sure want to delete the user");//:))
+  if(answer){
   this.userService.deleteUserByAdmin(this.username).subscribe(resp=>{
     
     if(resp.status==204){
@@ -57,7 +58,7 @@ deleteUser(){
   },error=>{console.log(error);
   alert("error:"+error);})
 
-}
+}}
 
 //admin cannot delete himself--hard coding
 isAdmin(){

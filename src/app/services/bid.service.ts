@@ -9,7 +9,7 @@ import { RetrieveBid } from '@app/classes/retrieve-bid';
   providedIn: 'root'
 })
 export class BidService {
-  private url:string="http://127.0.0.1:8000/api/events/"
+  private url:string="https://sunil-bid-app.herokuapp.com/api/events/"
 
   constructor(private http:HttpClient) { }
 

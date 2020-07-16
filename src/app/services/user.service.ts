@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class UserService {
 
-  private url:string="http://127.0.0.1:8000/user/"
+  private url:string="https://sunil-bid-app.herokuapp.com/user/"
   constructor(private http:HttpClient) { }
 
 
@@ -45,7 +45,6 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
 
   //for admin only
   getUserByUsername(username:string):Observable<HttpResponse<User>>{
-    console.log(username)
     if(username!=null){
     return this.http.get<User>(this.url+username+'/',{headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
       catchError(this.handleError)

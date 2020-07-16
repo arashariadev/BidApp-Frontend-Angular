@@ -49,7 +49,7 @@ export class AppComponent implements OnInit{
 
    getAllEvents(){
   //receiving all events and storing in behavior subject.
-    this.eventService.getEventList().subscribe(resp=>{console.log(resp.body);
+    this.eventService.getEventList().subscribe(resp=>{
       console.log(typeof resp.body.results);
       console.log("received events from http");
      this.event_list=resp.body.results;
