@@ -51,7 +51,7 @@ export class ProfileComponent implements OnInit {
     Email.send({
       Host : "smtp.elasticemail.com",
       Username : "pie99954@gmail.com",
-      Password : "B7C6D9FA384DD36B6F1600DC34BD4DF4335F",
+      Password : "7D2959372FBB172F93194EECAEB0ABFF622A",
       To : 'sunilpie1997@gmail.com',
       From : "pie99954@gmail.com",
       Subject : "Bid_app",
