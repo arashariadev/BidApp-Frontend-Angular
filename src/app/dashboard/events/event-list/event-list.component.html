@@ -16,17 +16,20 @@
   </blockquote>
 
 </ng-container>
+
+    <div class="col mb-4">
+  
+      <div class="card text-white bg-dark mb-3">
+        <div class="card-body">
+          <p class="card-text">{{filtered_set.length}} events received</p>
+        </div>
+      </div>
+
+    </div>
+
       <ng-container  *ngFor="let event of filtered_set">
 
-       <div class="col mb-4">
-  
-        <div class="card text-white bg-dark mb-3">
-          <div class="card-body">
-            <p class="card-text">{{filtered_set.length}} events received</p>
-          </div>
-        </div>
-
-       </div>
+      
 
         <div class="col mb-4">
           <div class="card text-white bg-dark mb-3">
