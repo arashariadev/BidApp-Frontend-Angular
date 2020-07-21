@@ -9,9 +9,25 @@
       </div>
 
     <div class="row row-cols-1 row-cols-md-3">
+<ng-container *ngIf="filtered_set.length==0">
 
+  <blockquote class="blockquote">
+    <p class="mb-0">There are no events currently</p>
+  </blockquote>
+
+</ng-container>
       <ng-container  *ngFor="let event of filtered_set">
-     
+
+       <div class="col mb-4">
+  
+        <div class="card text-white bg-dark mb-3">
+          <div class="card-body">
+            <p class="card-text">{{filtered_set.length}} events received</p>
+          </div>
+        </div>
+
+       </div>
+
         <div class="col mb-4">
           <div class="card text-white bg-dark mb-3">
             <div class="card-header"><h5>Event Id&nbsp;:&nbsp;{{event.id}}</h5></div>
