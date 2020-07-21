@@ -4,6 +4,7 @@ import { Observable, throwError,BehaviorSubject } from 'rxjs';
 import { catchError, retry,map } from 'rxjs/operators';
 import { BidEventListAPI } from '@app/classes/bid-event-list-api';
 import { BidEvent } from '@app/classes/bid-event';
+import { RestApiServerService } from './rest-api-server.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,10 @@ import { BidEvent } from '@app/classes/bid-event';
 export class EventService {
 
   
-  private url="https://sunil-bid-app.herokuapp.com/api/events/";
+  private url:string;
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient,private restapi:RestApiServerService) {
+    this.url=restapi.path+'api/events/';
     
    }
 //handle error

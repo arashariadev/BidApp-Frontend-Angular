@@ -3,14 +3,17 @@ import { HttpResponse, HttpClient, HttpHeaders, HttpErrorResponse } from '@angul
 import { Observable, throwError } from 'rxjs';
 import { User } from '@app/classes/user';
 import { catchError } from 'rxjs/operators';
+import { RestApiServerService } from './rest-api-server.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private url:string="https://sunil-bid-app.herokuapp.com/user/"
-  constructor(private http:HttpClient) { }
+  private url:string;
+  constructor(private http:HttpClient,private restapi:RestApiServerService) { 
+    this.url=restapi.path+'user/';
+  }
 
 
 //update user by admin

@@ -4,14 +4,17 @@ import { Observable, throwError } from 'rxjs';
 import { Bid } from '@app/classes/bid';
 import { catchError } from 'rxjs/operators';
 import { RetrieveBid } from '@app/classes/retrieve-bid';
+import { RestApiServerService } from './rest-api-server.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BidService {
-  private url:string="https://sunil-bid-app.herokuapp.com/api/events/"
+  private url:string;
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,private restapi:RestApiServerService) {
+    this.url=restapi.path+'api/events/';
+   }
 
   retrieveHighestBid(event_id:number):Observable<HttpResponse<RetrieveBid>>{
   

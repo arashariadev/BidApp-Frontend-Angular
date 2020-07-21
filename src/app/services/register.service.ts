@@ -3,16 +3,17 @@ import {HttpClient,HttpHeaders,HttpErrorResponse, HttpResponse} from '@angular/c
 import { User } from '@app/classes/user';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry,map } from 'rxjs/operators';
+import { RestApiServerService } from './rest-api-server.service';
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
   
 //url string
-  private url="https://sunil-bid-app.herokuapp.com/user/create/";
+  private url:string;
 
-  constructor(private http:HttpClient) {
-    
+  constructor(private http:HttpClient,private restapi:RestApiServerService) {
+    this.url=restapi.path+'user/create/';
    }
 //handle error
    private handleError(error: HttpErrorResponse) {

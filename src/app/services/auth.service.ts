@@ -8,19 +8,20 @@ import {JwtHelperService } from '@auth0/angular-jwt';
 //to read jwt-token payload
 import decode from 'jwt-decode';
 import { catchError } from 'rxjs/operators';
+import { RestApiServerService } from './rest-api-server.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
  
-  private url:string="https://sunil-bid-app.herokuapp.com/";
+  private url:string;
   //behavior subject containing loginStatus, (expiration,is_staff and user_id)-->from token
  private subject=new BehaviorSubject<LoggedInUser>(new LoggedInUser());
   public errors: any;
  
-  constructor(private http: HttpClient,private jwtHelper:JwtHelperService) {
-    
+  constructor(private http: HttpClient,private jwtHelper:JwtHelperService,private restapi:RestApiServerService) {
+    this.url=restapi.path;
   }
 
   //returning logged in user
