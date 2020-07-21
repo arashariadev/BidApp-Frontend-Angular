@@ -33,7 +33,7 @@
           <div class="row row-cols-1 row-cols-md-2">
             <div class="col mb-4">
               <div class="card text-white bg-dark mb-3">
-                <ng-container *ngIf="user.profile.image!=null"></ng-container><img src="{{user.profile.image}}" class="card-img-top" alt="My Profile">
+                <ng-container *ngIf="user.profile.image!=null"><img src="{{user.profile.image}}" class="card-img-top" alt="My Profile">
                 </ng-container>
                 <div class="card-body">
                   <h5 class="card-title">{{user.first_name+" "+user.last_name|titlecase}}</h5>
