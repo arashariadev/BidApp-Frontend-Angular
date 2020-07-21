@@ -1,8 +1,8 @@
 <div class="row row-cols-1 row-cols-md-2">
   <div class="col mb-4">
     <div class="card text-white bg-dark mb-3">
-      <ng-container *ngIf="image_url!=null"><img src="{{image_url}}" class="card-img-top" alt="My Profile">
-        </ng-container>
+      <img src="{{image_url}}" class="card-img-top" alt="My Profile">
+        
     <div class="card-body">
     <p class="card-text"><button class="btn btn-primary" (click)="updateProfileImage()">Edit Photo</button></p>
     <div class="card-text" *ngIf="want_to_update">
