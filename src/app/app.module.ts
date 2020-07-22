@@ -13,10 +13,6 @@ import {RestApiServerService} from '@app/services/rest-api-server.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthTokenInterceptor } from '@app/services/auth-interceptor';
 
-export function tokenGetter() {
-  return sessionStorage.getItem("token");
-}
-
 @NgModule({
   declarations: [//all the modules the application has
     AppComponent,
@@ -29,10 +25,7 @@ export function tokenGetter() {
     AppRoutingModule,
     FormsModule, HttpClientModule,
     JwtModule.forRoot({
-      config: {//automatically append token in headers while making http request
-        tokenGetter: tokenGetter,
-        whitelistedDomains: ["http://127.0.0.1:8000"],
-        blacklistedRoutes: ["http://example.com/examplebadroute/"],
+      config: {
       },
     }),
   ],
