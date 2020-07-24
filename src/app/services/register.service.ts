@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient,HttpHeaders,HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import { User } from '@app/classes/user';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry,map } from 'rxjs/operators';
 import { RestApiServerService } from './rest-api-server.service';
+import { NewUser } from '@app/classes/new-user';
 @Injectable({
   providedIn: 'root'
 })
@@ -37,9 +37,9 @@ export class RegisterService {
 }};
 
 
-  registerUser(user:User):Observable<HttpResponse<User>>{
+  registerUser(user:NewUser):Observable<HttpResponse<NewUser>>{
     
-    return this.http.post<User>(this.url,JSON.stringify(user),
+    return this.http.post<NewUser>(this.url,JSON.stringify(user),
     {headers: new HttpHeaders({'Content-Type': 'application/json'}),
     observe:'response'}).pipe(
      catchError(this.handleError));

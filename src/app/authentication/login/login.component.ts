@@ -2,9 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from '@app/services/auth.service';
 import {Router} from '@angular/router';
 import {ActivatedRoute} from '@angular/router';
-import { LoggedInUser } from '@app/classes/logged-in-user';
-import {Observable} from 'rxjs';
-import { $ } from 'protractor';
 import { User } from '@app/classes/user';
 import { ShareUserService } from '@app/services/share-user.service';
 import { Profile } from '@app/classes/profile';
@@ -49,7 +46,14 @@ export class LoginComponent implements OnInit {
     console.log("login()")
     this.authService.login({'username': this.LoginUser.username, 'password': this.LoginUser.password}).subscribe(
     //clearing out session storage
-      resp=>{sessionStorage.clear();//extra protection
+    
+      resp=>{
+        this.LoginUser = {//extra protection
+          username: null,
+          password: null
+        };
+        
+        sessionStorage.clear();//extra protection
         //storing access token received in session storage
         sessionStorage.setItem('token',resp.body["access"]);
 
