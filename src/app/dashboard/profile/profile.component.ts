@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from '@app/services/auth.service';
 import {Router,ActivatedRoute} from'@angular/router';
 import { User } from '@app/classes/user';
-import { Profile } from '@app/classes/profile';
 import { ShareUserService } from '@app/services/share-user.service';
 declare let Email: any;
 
@@ -23,7 +22,7 @@ export class ProfileComponent implements OnInit {
     //getting complete user from this service-->returns behavior subject 'user'
       this.shareUser.getUser().subscribe(resp=>{
         this.user=resp;
-      console.log(this.user.profile.image)});
+      });
       
   }
 

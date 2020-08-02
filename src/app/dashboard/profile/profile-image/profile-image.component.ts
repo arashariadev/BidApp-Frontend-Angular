@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '@app/services/user.service';
 import { ShareUserService } from '@app/services/share-user.service';
+import { ProfileImage } from '@app/classes/profile-image';
 
 @Component({
   selector: 'app-profile-image',
@@ -8,7 +9,7 @@ import { ShareUserService } from '@app/services/share-user.service';
   styles: [``]
 })
 export class ProfileImageComponent implements OnInit {
-public image_url:string=null;
+public image_object:ProfileImage=null;
 public is_error:boolean=false;
 public imagefile:File=null;
 public want_to_update:boolean=false;
@@ -16,7 +17,7 @@ public want_to_update:boolean=false;
   constructor(private shareUser:ShareUserService,private userService:UserService) { }
 
   ngOnInit(): void {
-this.shareUser.getUser().subscribe(resp=>this.image_url=resp.profile["image"]);
+this.userService.getProfileImage().subscribe(resp=>this.image_object=resp.body);
   }
 
   onFileSelect(event) {

@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { User } from '@app/classes/user';
 import { catchError } from 'rxjs/operators';
 import { RestApiServerService } from './rest-api-server.service';
+import { ProfileImage } from '@app/classes/profile-image';
 
 @Injectable({
   providedIn: 'root'
@@ -54,11 +55,22 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
     )}
     }
 
+    /* update profile image by user */
     updateProfileImage(formData:FormData,filename:string):Observable<HttpResponse<any>>{
-    return this.http.patch<any>(this.url+'profile/'+filename+'/',formData).pipe(
+    return this.http.post<any>(this.url+'profile/'+filename+'/',formData).pipe(
       catchError(this.handleError)
     )
     }
+
+    /* get profile image by user */
+
+    getProfileImage():Observable<HttpResponse<ProfileImage>>{
+
+      return this.http.get<ProfileImage>(this.url+'image/',{headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
+        catchError(this.handleError)
+      );
+    }
+
 
 
   private handleError(error: HttpErrorResponse) {
