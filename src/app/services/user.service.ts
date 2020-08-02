@@ -55,18 +55,17 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
     )}
     }
 
-    /* update profile image by user */
+    /* update profile image by user --->change contentType to match as below*/
     updateProfileImage(formData:FormData,filename:string):Observable<HttpResponse<any>>{
-    return this.http.post<any>(this.url+'profile/'+filename+'/',formData).pipe(
+    return this.http.post<any>(this.url+'profile/'+filename+'/',formData,{headers: new HttpHeaders({'Content-Type': 'image/*'}),observe:'response'}).pipe(
       catchError(this.handleError)
     )
     }
-
     /* get profile image by user */
 
     getProfileImage():Observable<HttpResponse<ProfileImage>>{
 
-      return this.http.get<ProfileImage>(this.url+'image/',{headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
+      return this.http.get<ProfileImage>(this.url+'image/',{headers: new HttpHeaders({'Content-Type': 'image/*'}),observe:'response'}).pipe(
         catchError(this.handleError)
       );
     }

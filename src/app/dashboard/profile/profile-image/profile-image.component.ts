@@ -9,7 +9,7 @@ import { ProfileImage } from '@app/classes/profile-image';
   styles: [``]
 })
 export class ProfileImageComponent implements OnInit {
-public image_object:ProfileImage=null;
+public image_object:ProfileImage;
 public is_error:boolean=false;
 public imagefile:File=null;
 public want_to_update:boolean=false;
@@ -17,7 +17,8 @@ public want_to_update:boolean=false;
   constructor(private shareUser:ShareUserService,private userService:UserService) { }
 
   ngOnInit(): void {
-this.userService.getProfileImage().subscribe(resp=>this.image_object=resp.body);
+
+  this.shareUser.getProfileImage().subscribe(resp=>this.image_object=resp);
   }
 
   onFileSelect(event) {

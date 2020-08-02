@@ -3,6 +3,8 @@ import {AuthService} from '@app/services/auth.service';
 import {Router,ActivatedRoute} from'@angular/router';
 import { User } from '@app/classes/user';
 import { ShareUserService } from '@app/services/share-user.service';
+import { ProfileImage } from '@app/classes/profile-image';
+import { UserService } from '@app/services/user.service';
 declare let Email: any;
 
 @Component({
@@ -15,15 +17,19 @@ export class ProfileComponent implements OnInit {
   //to store user details
   user:User
   public show_update_form:boolean=false;
-
-  constructor(private authService:AuthService,private router:Router,private route:ActivatedRoute,private shareUser:ShareUserService) { }
+  public image_object:ProfileImage; 
+  
+  constructor(private authService:AuthService,private router:Router,private route:ActivatedRoute,private shareUser:ShareUserService,
+    private userService:UserService) { }
 
   ngOnInit(): void {
     //getting complete user from this service-->returns behavior subject 'user'
       this.shareUser.getUser().subscribe(resp=>{
         this.user=resp;
       });
-      
+      this.shareUser.getProfileImage().subscribe(resp=>{
+        this.image_object=resp;
+      })
   }
 
 
@@ -69,6 +75,11 @@ export class ProfileComponent implements OnInit {
       this.shareUser.setUser(resp.body);
   }
     ,error=>alert(error));
+
+    this.userService.getProfileImage().subscribe(resp=>{
+      this.shareUser.setProfileImage(resp.body);
+    })
   }
+
   
 }

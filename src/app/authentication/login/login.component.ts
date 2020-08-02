@@ -5,6 +5,8 @@ import {ActivatedRoute} from '@angular/router';
 import { User } from '@app/classes/user';
 import { ShareUserService } from '@app/services/share-user.service';
 import { Profile } from '@app/classes/profile';
+import { UserService } from '@app/services/user.service';
+import { ProfileImage } from '@app/classes/profile-image';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,8 +20,10 @@ export class LoginComponent implements OnInit {
  public username:string;;
  //represents if anyone is logged in?
   public loginStatus:boolean=false;
+
+
   constructor(private authService: AuthService,public router:Router,public route:ActivatedRoute,
-    private shareUser:ShareUserService) {
+    private shareUser:ShareUserService,private userService:UserService) {
    }
   
   ngOnInit() {
@@ -60,6 +64,8 @@ export class LoginComponent implements OnInit {
       this.authService.updateData();
       //getting user profile after login---
       this.getUserFromHttp();
+      //getting user profile image from amazon aws
+      this.getProfileImage();
 
     },
       error=>{
@@ -104,5 +110,17 @@ this.router.navigate(['../register'],{relativeTo:this.route})
       error=>{
       alert("unable to get profile");
       alert(error)});
+  }
+
+
+  /* get profile image */
+
+  getProfileImage(){
+
+    this.userService.getProfileImage().subscribe(resp=>{
+      this.shareUser.setProfileImage(resp.body);
+      
+    
+      });
   }
 }
