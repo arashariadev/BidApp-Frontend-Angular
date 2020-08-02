@@ -29,6 +29,7 @@ export class ProfileComponent implements OnInit {
       });
       this.shareUser.getProfileImage().subscribe(resp=>{
         this.image_object=resp;
+        console.log(JSON.stringify(this.image_object));
       })
   }
 

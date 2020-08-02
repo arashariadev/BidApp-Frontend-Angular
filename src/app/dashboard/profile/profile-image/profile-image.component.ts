@@ -25,7 +25,7 @@ public want_to_update:boolean=false;
     if (event.target.files.length > 0) {
 
       const file:File= event.target.files[0];
-      if(file.size<=1000000){//1 mb
+      if(file.size<=185000){//184  kb....it's special
         console.log(file.size)
       this.imagefile=file;
       this.is_error=false;
