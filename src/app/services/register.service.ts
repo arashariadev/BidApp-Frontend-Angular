@@ -30,10 +30,11 @@ export class RegisterService {
         `message was: ${error.message}` );
     
     // return an observable with a user-facing error message
-    if(error.status==400)
-    return throwError(error.error.detail);
+    if(error.status==0)
+    throwError("server error....contact admin!!!");
     else
-    throwError("server error....contact admin!!!")
+    return throwError(error.error.detail);
+
 }};
 
 

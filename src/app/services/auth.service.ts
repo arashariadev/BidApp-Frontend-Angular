@@ -70,10 +70,8 @@ private setLoggedInUser(object:LoggedInUser){
         
           if(error.status==0)
           return throwError("server error....contact admin!!!");
-          if(error.status==401)
+          
         return throwError(error.error.detail);
-        if(error.status==404)
-        return throwError("detail not found");
 }};
  
   public login(LoginUser):Observable<HttpResponse<any>>{
