@@ -37,7 +37,9 @@
         <div class="col mb-4">
           <div class="card text-white bg-dark mb-3">
             <div class="card-header"><h5>Event Id&nbsp;:&nbsp;{{event.id}}</h5></div>
-            <a routerLink="/events/{{event.id}}" ><img src="{{event.product.image}}" class="card-img-top" alt="{{event.product.category}}"></a>
+            <a routerLink="/events/{{event.id}}" >
+             <img src="{{event.product_image.image}}" class="card-img-top" alt="{{event.product.category}}">
+            </a>
             <div class="card-body">
               <h5 class="card-title">{{event.product.name  | titlecase}}</h5>
               <p class="card-text">Start Date&nbsp;:&nbsp;{{event.start_date|date:'medium'}}</p>

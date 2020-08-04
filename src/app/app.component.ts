@@ -53,7 +53,7 @@ export class AppComponent implements OnInit{
       console.log(typeof resp.body.results);
       console.log("received events from http");
      this.event_list=resp.body.results;
-     this.shareEvent.setShareEventNode({"event_list":this.event_list});},
+     this.shareEvent.setShareEvents(this.event_list);},
     error=>{console.log(error);
     alert(error);
      })

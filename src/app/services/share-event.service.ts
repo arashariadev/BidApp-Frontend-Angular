@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BidEvent } from '@app/classes/bid-event';
-import { ShareEventNode } from '@app/classes/share-event-node';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -9,21 +8,21 @@ import { BehaviorSubject } from 'rxjs';
 export class ShareEventService {
 
   //behavior subject storing events array
-private shareEventNode=new BehaviorSubject<ShareEventNode>(new ShareEventNode());
+private shareEvents=new BehaviorSubject<BidEvent[]>([]);
   
 
   constructor() { 
   }
 
   //function for setting ...
-  setShareEventNode(shareEventNode:ShareEventNode){
-    if(shareEventNode!=null){
-    this.shareEventNode.next(shareEventNode);
-    }
+  setShareEvents(events:BidEvent[]){
+    
+    this.shareEvents.next(events);
+    
   }
   //function for receiving event array
-  getShareEventNode(){
-    return this.shareEventNode.asObservable();
+  getShareEvents(){
+    return this.shareEvents.asObservable();
   }
 
 }

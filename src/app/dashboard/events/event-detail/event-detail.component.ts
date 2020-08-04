@@ -10,6 +10,7 @@ import { Bid } from '@app/classes/bid';
 import { EventService } from '@app/services/event.service';
 import { User } from '@app/classes/user';
 import { Profile } from '@app/classes/profile';
+import { ProductImage } from '@app/classes/product-image';
 
 @Component({
   selector: 'app-event-detail',
@@ -19,32 +20,43 @@ import { Profile } from '@app/classes/profile';
 export class EventDetailComponent implements OnInit {
   //to obtain event id for which details need to be shown
   event_id:number=null;
+
   event:BidEvent=null;
+
   is_staff:boolean=false;
   can_bid:boolean=false;//if current datetime is between start date and end date of event
+
   is_bidder:boolean=false;
   take_bid:boolean=false;//only if user say yes:))
+
   user_bidprice:number=null;
+
   is_error:boolean=false;
+
   highest_bid:number=null;
   highest_bid_user:User=new User(new Profile());
+
   constructor(private router:Router,private route:ActivatedRoute,private shareEvent:ShareEventService,
     private authService:AuthService,private shareUser:ShareUserService,private bidService:BidService,private eventService:EventService ) {
   console.log("event detail:"+this.event);
    }
   
   ngOnInit(): void {
+
     //initialising with default values
-    this.event=new BidEvent(new Product());
+    this.event=new BidEvent(new Product(),new ProductImage);
+
 //obtaining event_id from route parameters
     this.route.paramMap.subscribe((params:ParamMap)=>{
       let id=parseInt(params.get('id'));
       this.event_id=id;
     });
+
     //obtaining event with given event_id from service providing 'events array'
-    this.shareEvent.getShareEventNode().subscribe(val=>{
-      if(val.event_list.length!=0){
-        this.event=val.event_list.filter(x=>x.id==this.event_id)[0];
+    this.shareEvent.getShareEvents().subscribe(val=>{
+
+      if(val.length!=0){
+        this.event=val.filter(x=>x.id==this.event_id)[0];
 
         if(this.event!=null){//callback that is executed only after receiving event details
           this.authService.getLoggedInUser().subscribe(resp=>this.is_staff=resp["is_staff"])

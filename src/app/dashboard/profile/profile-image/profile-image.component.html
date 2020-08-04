@@ -9,7 +9,7 @@
      <form  (ngSubmit)="onSubmit()" class="form-group">
     <div class="custom-file">
     <input type="file" name="image" accept=".jpg,.jpeg"  required (change)="onFileSelect($event)">
-    <div *ngIf="is_error">Image size should be less than 185 Kb</div>
+    <div *ngIf="is_error">Image size should be less than 100 Kb</div>
   </div>
     <button type="submit" class="btn btn-primary">Submit</button>
    </form> 

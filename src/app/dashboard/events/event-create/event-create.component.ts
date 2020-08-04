@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BidEvent } from '@app/classes/bid-event';
 import { Product } from '@app/classes/product';
 import { EventService } from '@app/services/event.service';
+import { ProductImage } from '@app/classes/product-image';
 
 @Component({
   selector: 'app-event-create',
@@ -16,7 +17,7 @@ public is_deadline_valid:boolean=true;
 public is_error:boolean=false;
   constructor(private eventService:EventService) { 
     //initialising new BidEvent object with default values 
-    this.event=new BidEvent(new Product());
+    this.event=new BidEvent(new Product(),new ProductImage());
   }
 
   ngOnInit(): void {
