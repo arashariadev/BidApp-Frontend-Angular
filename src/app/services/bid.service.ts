@@ -44,8 +44,8 @@ export class BidService {
        
        `message was: ${error.message}` );
          if(error.status==0)
-         return throwError("server error....contact admin!!!");
-       else
+         return throwError("could not connect to server.Check your internet connection!!!");
+        else
        return throwError(error.error.detail);
 }};
 }

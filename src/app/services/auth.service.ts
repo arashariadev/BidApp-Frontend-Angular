@@ -66,10 +66,10 @@ private setLoggedInUser(object:LoggedInUser){
         
         `message was: ${error.message}` );
       if(error.status==400)
-        return throwError("invalid crediantails....try again!!!");
+        return throwError("invalid crediantials....try again!!!");
         
           if(error.status==0)
-          return throwError("server error....contact admin!!!");
+          return throwError("could not connect to server.Check your internet connection!!!");
           
         return throwError(error.error.detail);
 }};

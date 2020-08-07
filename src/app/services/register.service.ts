@@ -31,7 +31,7 @@ export class RegisterService {
     
     // return an observable with a user-facing error message
     if(error.status==0)
-    throwError("server error....contact admin!!!");
+    return throwError("could not connect to server.Check your internet connection!!!");
     else
     return throwError(error.error.detail);
 

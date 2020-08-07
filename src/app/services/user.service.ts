@@ -84,7 +84,7 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
         
         `message was: ${error.message}` );
         if(error.status==0)
-        return throwError("server error....contact admin!!!");
+        return throwError("could not connect to server.Check your internet connection!!!");
         else{
           console.log("hello")
         return throwError(error.error.detail);}

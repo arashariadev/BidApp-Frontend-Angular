@@ -34,8 +34,8 @@ export class EventService {
     
     // return an observable with a user-facing error message
     if(error.status==0){
- return throwError('server error....contact admin!!!')
-    }
+      return throwError("could not connect to server.Check your internet connection!!!");
+        }
     if(error.status!=0){
     return throwError(
       error.error.detail);}
