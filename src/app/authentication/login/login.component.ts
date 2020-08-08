@@ -6,7 +6,7 @@ import { User } from '@app/classes/user';
 import { ShareUserService } from '@app/services/share-user.service';
 import { Profile } from '@app/classes/profile';
 import { UserService } from '@app/services/user.service';
-import { ProfileImage } from '@app/classes/profile-image';
+import { SpinnerService } from '@app/services/spinner.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
 
 
   constructor(private authService: AuthService,public router:Router,public route:ActivatedRoute,
-    private shareUser:ShareUserService,private userService:UserService) {
+    private shareUser:ShareUserService,private userService:UserService,private spinner:SpinnerService) {
    }
   
   ngOnInit() {
@@ -52,11 +52,11 @@ export class LoginComponent implements OnInit {
     //clearing out session storage
     
       resp=>{
+        this.spinner.remove();
         this.LoginUser = {//extra protection
           username: null,
           password: null
         };
-        
         sessionStorage.clear();//extra protection
         //storing access token received in session storage
         sessionStorage.setItem('token',resp.body["access"]);
@@ -69,9 +69,11 @@ export class LoginComponent implements OnInit {
 
     },
       error=>{
+        this.spinner.remove();
       alert(error);
-     }
-    );
+      
+     
+      });
   
      //alert user about status
     if(this.loginStatus){
@@ -106,10 +108,11 @@ this.router.navigate(['../register'],{relativeTo:this.route})
     {let user:User=resp.body;
       //setting new user received in behavior subject 'user'
       this.shareUser.setUser(user);
-      console.log("got profile")},
+      this.spinner.remove();},
       error=>{
+        this.spinner.remove();
       alert("unable to get profile");
-      alert(error)});
+      });
   }
 
 
@@ -118,9 +121,11 @@ this.router.navigate(['../register'],{relativeTo:this.route})
   getProfileImage(){
 
     this.userService.getProfileImage().subscribe(resp=>{
+      this.spinner.remove();
       this.shareUser.setProfileImage(resp.body);
-      
-    
+      },error=>
+      {this.spinner.remove();
+        alert(error);
       });
   }
 }

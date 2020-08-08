@@ -3,6 +3,7 @@ import { BidEvent } from '@app/classes/bid-event';
 import { Product } from '@app/classes/product';
 import { EventService } from '@app/services/event.service';
 import { ProductImage } from '@app/classes/product-image';
+import { SpinnerService } from '@app/services/spinner.service';
 
 @Component({
   selector: 'app-event-create',
@@ -15,7 +16,7 @@ public event:BidEvent;
 public is_start_date_valid:boolean=true;
 public is_deadline_valid:boolean=true;
 public is_error:boolean=false;
-  constructor(private eventService:EventService) { 
+  constructor(private eventService:EventService,private spinner:SpinnerService) { 
     //initialising new BidEvent object with default values 
     this.event=new BidEvent(new Product(),new ProductImage());
   }
@@ -69,9 +70,15 @@ onSubmit(){
   if(this.is_start_date_valid && (this.is_deadline_valid && !this.is_error)){
 
   this.eventService.addEventByAuctioneer(this.event).subscribe(resp=>{
+  
+
     if(resp.status==201){
+      this.spinner.remove();
    alert("event created successfully");
-    }},error=>alert(error));
+    }},error=>
+    {  this.spinner.remove(); 
+      alert(error)
+    });
 
 }
 }

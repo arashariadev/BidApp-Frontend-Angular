@@ -11,6 +11,7 @@ import { EventService } from '@app/services/event.service';
 import { User } from '@app/classes/user';
 import { Profile } from '@app/classes/profile';
 import { ProductImage } from '@app/classes/product-image';
+import { SpinnerService } from '@app/services/spinner.service';
 
 @Component({
   selector: 'app-event-detail',
@@ -37,7 +38,8 @@ export class EventDetailComponent implements OnInit {
   highest_bid_user:User=new User(new Profile());
 
   constructor(private router:Router,private route:ActivatedRoute,private shareEvent:ShareEventService,
-    private authService:AuthService,private shareUser:ShareUserService,private bidService:BidService,private eventService:EventService ) {
+    private authService:AuthService,private shareUser:ShareUserService,private bidService:BidService,private eventService:EventService,
+     private spinner:SpinnerService) {
   console.log("event detail:"+this.event);
    }
   
@@ -88,7 +90,11 @@ export class EventDetailComponent implements OnInit {
       console.log("in event component"+this.event_id)
 
     this.eventService.deleteEventByAdmin(this.event_id).subscribe(resp=>
-      alert("successfully deleted"),error=>alert(error));
+      {   this.spinner.remove(); 
+        alert("successfully deleted")},error=>{
+          this.spinner.remove();
+          alert(error);
+        });
     }
   }
 
@@ -106,8 +112,10 @@ console.log(current_datetime)
 let bid=new Bid(this.user_bidprice,current_datetime);
 //send bid
 this.bidService.place_bid(bid,this.event.id).subscribe(resp=>
-  {alert("bid successfully placed")},error=>
-  {alert(error);});
+  {   this.spinner.remove(); 
+    alert("bid successfully placed")},error=>
+  {  this.spinner.remove();  
+    alert(error);});
 
 this.take_bid=false;
   }
@@ -128,9 +136,14 @@ this.take_bid=false;
   
   getHighestBid(){
     this.bidService.retrieveHighestBid(this.event_id).subscribe(resp=>
-      {this.highest_bid=resp.body["highest_bid"];
+      {
+        this.spinner.remove();
+        this.highest_bid=resp.body["highest_bid"];
     this.highest_bid_user=resp.body["user"];
-    },error=>alert(error))
+    },error=>
+    {  this.spinner.remove();
+      alert(error);
+    })
   }
 
 }

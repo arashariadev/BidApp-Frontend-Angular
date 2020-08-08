@@ -5,6 +5,7 @@ import { User } from '@app/classes/user';
 import { catchError } from 'rxjs/operators';
 import { RestApiServerService } from './rest-api-server.service';
 import { ProfileImage } from '@app/classes/profile-image';
+import { SpinnerService } from './spinner.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,15 @@ import { ProfileImage } from '@app/classes/profile-image';
 export class UserService {
 
   private url:string;
-  constructor(private http:HttpClient,private restapi:RestApiServerService) { 
+  constructor(private http:HttpClient,private restapi:RestApiServerService,private spinner:SpinnerService) { 
     this.url=restapi.path+'user/';
   }
 
 
 //update user by admin
 updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
+  this.spinner.add();
+
   if(user!=null){
   return this.http.put<User>(this.url+user.username+'/',JSON.stringify(user),{headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
   catchError(this.handleError)
@@ -27,6 +30,8 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
 //update profile by user
 
   updateProfileByUser(user:User):Observable<HttpResponse<any>>{
+    this.spinner.add();
+
     if(user!=null){
     return this.http.put<any>(this.url,JSON.stringify(user),
     {headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
@@ -38,6 +43,8 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
 
   //on successfull deletion ,generic views return 204 with no response body
   deleteUserByAdmin(username:string):Observable<HttpResponse<any>>{
+    this.spinner.add();
+
     if(username!=null){
       return this.http.delete<User>(this.url+username+'/',{headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
           catchError(this.handleError)
@@ -49,6 +56,8 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
 
   //for admin only
   getUserByUsername(username:string):Observable<HttpResponse<User>>{
+    this.spinner.add();
+
     if(username!=null){
     return this.http.get<User>(this.url+username+'/',{headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
       catchError(this.handleError)
@@ -57,6 +66,8 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
 
     /* update profile image by user --->change contentType to match as below*/
     updateProfileImage(formData:FormData,filename:string):Observable<HttpResponse<any>>{
+      this.spinner.add();
+
     return this.http.post<any>(this.url+'profile/'+filename+'/',formData).pipe(
       catchError(this.handleError)
     )
@@ -65,6 +76,7 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
 
     getProfileImage():Observable<HttpResponse<ProfileImage>>{
 
+      this.spinner.add();
       return this.http.get<ProfileImage>(this.url+'image/',{headers: new HttpHeaders({'Content-Type': 'image/*'}),observe:'response'}).pipe(
         catchError(this.handleError)
       );

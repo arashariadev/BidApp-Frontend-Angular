@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '@app/services/user.service';
 import { ShareUserService } from '@app/services/share-user.service';
 import { ProfileImage } from '@app/classes/profile-image';
+import { SpinnerService } from '@app/services/spinner.service';
 
 @Component({
   selector: 'app-profile-image',
@@ -14,7 +15,7 @@ public is_error:boolean=false;
 public imagefile:File=null;
 public want_to_update:boolean=false;
 
-  constructor(private shareUser:ShareUserService,private userService:UserService) { }
+  constructor(private shareUser:ShareUserService,private userService:UserService,private spinner:SpinnerService) { }
 
   ngOnInit(): void {
 
@@ -48,8 +49,11 @@ public want_to_update:boolean=false;
       let formData:FormData=new FormData();
       formData.append('file',this.imagefile);
   this.userService.updateProfileImage(formData,filename).subscribe(resp=>
-    alert("profile image successfully updated...refresh profile"),
+  {  this.spinner.remove();  
+    alert("profile image successfully updated...refresh profile")
+  },
     error=>{
+      this.spinner.remove();
       alert(error);}
     );}
     this.want_to_update=false;

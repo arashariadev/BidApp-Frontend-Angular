@@ -5,6 +5,7 @@ import { Bid } from '@app/classes/bid';
 import { catchError } from 'rxjs/operators';
 import { RetrieveBid } from '@app/classes/retrieve-bid';
 import { RestApiServerService } from './rest-api-server.service';
+import { SpinnerService } from './spinner.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +13,21 @@ import { RestApiServerService } from './rest-api-server.service';
 export class BidService {
   private url:string;
 
-  constructor(private http:HttpClient,private restapi:RestApiServerService) {
+  constructor(private http:HttpClient,private restapi:RestApiServerService,private spinner:SpinnerService) {
     this.url=restapi.path+'api/events/';
    }
 
   retrieveHighestBid(event_id:number):Observable<HttpResponse<RetrieveBid>>{
+    this.spinner.add();
+
   
     return this.http.get<RetrieveBid>(this.url+event_id+'/highest_bid/',
     {headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(catchError(this.handleError))
   }
 
   place_bid(bid:Bid,event_id:number):Observable<HttpResponse<any>>{
+    this.spinner.add();
+
     if(bid!=null && event_id!=null){
     return this.http.post<any>(this.url+event_id+'/bids/create/',JSON.stringify(bid),
     {headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(

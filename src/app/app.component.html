@@ -6,17 +6,19 @@
   </button>
  <!--if user is currently not logged in-->
   <div  class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto" *ngIf="!logged_in_user['loginStatus']">
+    <ul class="navbar-nav mr-auto">
       
+      <ng-container *ngIf="!logged_in_user['loginStatus']">
       <li class="nav-item" >
         <a routerLink="/login" class="nav-link navbar-brand mb-0 h1 active">Login</a>  
     </li>
       <li class="nav-item" >
         <a class="nav-link navbar-brand mb-0 h1 active" routerLink="/register">Register</a>
       </li>
-    </ul>
-    <!--if user is logged in-->
-      <ul class="navbar-nav mr-auto" *ngIf="logged_in_user['loginStatus']">
+    </ng-container>
+    <!--if user is logged in -->
+    <ng-container  *ngIf="logged_in_user['loginStatus']">
+
       <li class="nav-item active" >
         <span class="nav-link navbar-brand mb-0 h1 active" >Welcome {{user.username}}</span>
       </li>
@@ -37,19 +39,22 @@
           <a class="nav-link navbar-brand mb-0 h1 active" routerLink="/events">Something else here</a>
         </div>
       </li>
-      
-      
+
+    </ng-container>
 
       </ul>
     
-    
-   
-    
     <form class="form-inline my-2 my-lg-0">
+
       <a routerLink="/admin" ><span class="nav-link navbar-brand mb-0 h1 active">Admin</span></a>
       <span class="nav-link navbar-brand mb-0 h1 active">{{logged_in_user["expiration"]|date:'medium'}}</span>
       <input class="form-control mr-sm-2" type="search" placeholder="search to reload events" aria-label="Search">
       <button class="btn btn-secondary my-2 my-sm-0" (click)="refreshEvents()">Search</button>
+      
+      <div class="spinner-border text-secondary m-2" [hidden]="!spinner_status" role="status">
+      
+    </div>
+      
     </form>
   </div>
 </nav>
@@ -57,6 +62,9 @@
 <main role="main">
   <div class="album py-5 bg-light">
     <div class="container">  
+      
+     
+
 <router-outlet></router-outlet>
 </div>
 </div>

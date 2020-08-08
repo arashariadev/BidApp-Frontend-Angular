@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpErrorResponse,HttpResponse} from '@angular/common/http';
-import {Observable, throwError, BehaviorSubject, Subject} from 'rxjs';
+import {Observable, throwError, BehaviorSubject} from 'rxjs';
 import {User} from '@app/classes/user';
 import {LoggedInUser} from '@app/classes/logged-in-user';
 //angular-json web token library
@@ -9,6 +9,7 @@ import {JwtHelperService } from '@auth0/angular-jwt';
 import decode from 'jwt-decode';
 import { catchError } from 'rxjs/operators';
 import { RestApiServerService } from './rest-api-server.service';
+import { SpinnerService } from './spinner.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class AuthService {
  private subject=new BehaviorSubject<LoggedInUser>(new LoggedInUser());
   public errors: any;
  
-  constructor(private http: HttpClient,private jwtHelper:JwtHelperService,private restapi:RestApiServerService) {
+  constructor(private http: HttpClient,private jwtHelper:JwtHelperService,private restapi:RestApiServerService,private spinner:SpinnerService) {
     this.url=restapi.path;
   }
 
@@ -54,6 +55,7 @@ private setLoggedInUser(object:LoggedInUser){
 
    
    private handleError(error: HttpErrorResponse) {
+     
      console.log("handling error.......")
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -75,6 +77,7 @@ private setLoggedInUser(object:LoggedInUser){
 }};
  
   public login(LoginUser):Observable<HttpResponse<any>>{
+    this.spinner.add();
     if(LoginUser!=null){
     return this.http.post(this.url+'auth/login/', JSON.stringify(LoginUser),{headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
   
@@ -92,6 +95,7 @@ private setLoggedInUser(object:LoggedInUser){
 }
  
    public updateData() {
+
     this.errors = [];
     //don't use local storage as it is not secure
     // decode the token to read the user_id,is_staff and expiration timestamp
@@ -103,6 +107,8 @@ private setLoggedInUser(object:LoggedInUser){
   }
 
   getUser():Observable<HttpResponse<User>>{
+    this.spinner.add();
+
   return this.http.get<User>(this.url+'user/',
   {headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
     catchError(this.handleError)

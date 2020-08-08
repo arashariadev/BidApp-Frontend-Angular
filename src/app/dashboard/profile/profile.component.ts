@@ -5,6 +5,7 @@ import { User } from '@app/classes/user';
 import { ShareUserService } from '@app/services/share-user.service';
 import { ProfileImage } from '@app/classes/profile-image';
 import { UserService } from '@app/services/user.service';
+import { SpinnerService } from '@app/services/spinner.service';
 declare let Email: any;
 
 @Component({
@@ -20,7 +21,7 @@ export class ProfileComponent implements OnInit {
   public image_object:ProfileImage; 
   
   constructor(private authService:AuthService,private router:Router,private route:ActivatedRoute,private shareUser:ShareUserService,
-    private userService:UserService) { }
+    private userService:UserService,private spinner:SpinnerService) { }
 
   ngOnInit(): void {
     //getting complete user from this service-->returns behavior subject 'user'
@@ -72,12 +73,17 @@ export class ProfileComponent implements OnInit {
 //new user details if present will be stored in behavior subject so that all components receive same details.
   refreshProfile(){
     this.authService.getUser().subscribe(resp=>{
+    this.spinner.remove();
     alert("refreshed");
       this.shareUser.setUser(resp.body);
   }
-    ,error=>alert(error));
+    ,error=>{
+      this.spinner.remove();
+      alert(error);});
 
     this.userService.getProfileImage().subscribe(resp=>{
+  
+      this.spinner.remove();
       this.shareUser.setProfileImage(resp.body);
     })
   }
