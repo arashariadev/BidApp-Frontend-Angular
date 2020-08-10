@@ -118,6 +118,7 @@ this.router.navigate(['../register'],{relativeTo:this.route})
 
       /* setting new user received in behavior subject 'user' */
       this.shareUser.setLoggedInUser(user);
+      localStorage.setItem('user',JSON.stringify(user));
       this.spinner.remove();},
       error=>{
         this.spinner.remove();

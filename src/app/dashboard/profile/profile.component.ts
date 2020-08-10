@@ -73,8 +73,9 @@ export class ProfileComponent implements OnInit {
     this.authService.getUser().subscribe(resp=>{
     this.spinner.remove();
     alert("refreshed your profile");
-
-    this.shareUser.setLoggedInUser(resp.body);
+    let user:User=resp.body;
+    this.shareUser.setLoggedInUser(user);
+    localStorage.setItem("user",JSON.stringify(user));
   }
     ,error=>{
       this.spinner.remove();
