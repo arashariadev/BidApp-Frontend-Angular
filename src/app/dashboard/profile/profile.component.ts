@@ -6,6 +6,7 @@ import { ShareUserService } from '@app/services/share-user.service';
 import { ProfileImage } from '@app/classes/profile-image';
 import { UserService } from '@app/services/user.service';
 import { SpinnerService } from '@app/services/spinner.service';
+import { environment } from 'environments/environment';
 declare let Email: any;
 
 @Component({
@@ -54,14 +55,37 @@ export class ProfileComponent implements OnInit {
   user_request(username,request_type){
     let value:string;
     if(request_type==='bid'){
-      alert("this fuctionality is yet to be added");
       value="bidder";
     }
-    else
+    
     if(request_type==='auction'){
-      alert("this fuctionality is yet to be added");
       value="auctioneer";
-    } 
+    }
+    this.spinner.add();
+    Email.send({
+      Host : "smtp.elasticemail.com",
+      Username : "pie99954@gmail.com",
+      Password : environment.smtp_secret,
+      To : 'sunilpie1997@gmail.com',
+      From : "pie99954@gmail.com",
+      Subject : "bid-app-project",
+      Body : `${username} wants to be a ${value}`
+  }).then(
+    message => {
+      this.spinner.remove();
+      if(message==='OK'){
+        alert("email has been sent to admin.ThankYou");
+      }
+      else
+      alert(message);
+    }
+  ).catch(this.emailErrorResp());
+
+  }
+
+  emailErrorResp(){
+    alert("email could not be sent.Check internet connection");
+   this.spinner.remove();
   }
 
 /* functionality to send email to user :yet to be added */
