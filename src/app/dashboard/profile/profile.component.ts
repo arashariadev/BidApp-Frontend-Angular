@@ -6,7 +6,7 @@ import { ShareUserService } from '@app/services/share-user.service';
 import { ProfileImage } from '@app/classes/profile-image';
 import { UserService } from '@app/services/user.service';
 import { SpinnerService } from '@app/services/spinner.service';
-import { environment } from 'environments/environment';
+import {environment } from 'environments/environment.prod';
 declare let Email: any;
 
 @Component({
@@ -64,8 +64,8 @@ export class ProfileComponent implements OnInit {
     this.spinner.add();
     Email.send({
       Host : "smtp.elasticemail.com",
-      Username : "pie99954@gmail.com",
-      Password : environment.smtp_secret,
+      Username :"pie99954@gmail.com",
+      Password :environment.smtp_secret,
       To : 'sunilpie1997@gmail.com',
       From : "pie99954@gmail.com",
       Subject : "bid-app-project",
