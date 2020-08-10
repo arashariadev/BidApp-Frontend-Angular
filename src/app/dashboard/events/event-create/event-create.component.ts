@@ -10,12 +10,19 @@ import { SpinnerService } from '@app/services/spinner.service';
   templateUrl: './event-create.component.html',
   styles: [``]
 })
+
 export class EventCreateComponent implements OnInit {
-public event:BidEvent;
-//initially true so that errors are not shown
-public is_start_date_valid:boolean=true;
-public is_deadline_valid:boolean=true;
-public is_error:boolean=false;
+
+  public event:BidEvent;
+
+  /* is start_date of event valid? :initially true,so that errors are not shown */
+  public is_start_date_valid:boolean=true;
+
+  /* is deadline of event valid? :initially true,so that errors are not shown */ 
+  public is_deadline_valid:boolean=true;
+  /* checks if any error */
+  public is_error:boolean=false;
+
   constructor(private eventService:EventService,private spinner:SpinnerService) { 
     //initialising new BidEvent object with default values 
     this.event=new BidEvent(new Product(),new ProductImage());
@@ -23,14 +30,17 @@ public is_error:boolean=false;
 
   ngOnInit(): void {
   }
-//parse date-->used for start_date and deadline of event object
+  /*  parse date-->used for start_date and deadline of event object */
   parse_date(date:Date):number{
     return new Date(date).getTime();//returns milliseconds since epoch
   }
 
+  /* this fn. validates start_date of event entered by user */
+
   validate_start_date():boolean{
-    //true when start_date is 30 hours ahead of now 
-  const current_date=Date.now();
+    /* true when start_date is 30 hours ahead of now */
+
+    const current_date=Date.now();
     const  parsed_start_date=this.parse_date(this.event.start_date)
     const hours=Math.floor((parsed_start_date-current_date)/(1000*3600));
     if(hours>=30){
@@ -40,7 +50,7 @@ public is_error:boolean=false;
     return false;
   }
 
-  //true when deadline is atleast 2 hours ahead
+  /* true when deadline is atleast 2 hours ahead */
   validate_deadline():boolean{
     const parsed_deadline=this.parse_date(this.event.deadline);
     const parsed_start_date=this.parse_date(this.event.start_date);
@@ -52,6 +62,8 @@ public is_error:boolean=false;
     return false;
   }
 
+
+  /* validates base_price although should not be on client side*/
 validate_baseprice(){
 if(this.event.base_price>=1 && this.event.base_price<=10000000){
 this.is_error=false;
@@ -62,24 +74,28 @@ return true;
     return false;
   }
 
-onSubmit(){
-  this.validate_baseprice();
-  //setting values to decide if errors are present in either....
+  /* when user submits 'event create' form */
+
+  onSubmit(){
+  
+    this.validate_baseprice();
+  
+    /* validates start_date and deadline of event */
   this.is_start_date_valid=this.validate_start_date();//showing error if there is....
   this.is_deadline_valid=this.validate_deadline();//showing error if there is ....
   if(this.is_start_date_valid && (this.is_deadline_valid && !this.is_error)){
 
   this.eventService.addEventByAuctioneer(this.event).subscribe(resp=>{
-  
 
-    if(resp.status==201){
       this.spinner.remove();
-   alert("event created successfully");
-    }},error=>
+      alert("event created successfully");
+    },error=>
     {  this.spinner.remove(); 
       alert(error)
     });
 
 }
 }
+
+
 }

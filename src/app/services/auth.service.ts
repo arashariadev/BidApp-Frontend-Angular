@@ -2,73 +2,71 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpErrorResponse,HttpResponse} from '@angular/common/http';
 import {Observable, throwError, BehaviorSubject} from 'rxjs';
 import {User} from '@app/classes/user';
-import {LoggedInUser} from '@app/classes/logged-in-user';
-//angular-json web token library
-import {JwtHelperService } from '@auth0/angular-jwt';
+
 //to read jwt-token payload
 import decode from 'jwt-decode';
 import { catchError } from 'rxjs/operators';
-import { RestApiServerService } from './rest-api-server.service';
-import { SpinnerService } from './spinner.service';
+import { RestApiServerService } from '@app/services/rest-api-server.service';
+import { SpinnerService } from '@app/services/spinner.service';
+import { ShareUserService } from './share-user.service';
+import { Profile } from '@app/classes/profile';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
  
   private url:string;
-  //behavior subject containing loginStatus, (expiration,is_staff and user_id)-->from token
- private subject=new BehaviorSubject<LoggedInUser>(new LoggedInUser());
-  public errors: any;
+  
+/* this behavior subject keeps track if user is logged in or not based on whether 
+    token  is present in localStorage */
  
-  constructor(private http: HttpClient,private jwtHelper:JwtHelperService,private restapi:RestApiServerService,private spinner:SpinnerService) {
+  private loginStatus=new BehaviorSubject<Boolean>(AuthService.hasToken());
+
+ 
+  constructor(private http: HttpClient,private restapi:RestApiServerService,private spinner:SpinnerService,
+    private shareUser:ShareUserService) {
     this.url=restapi.path;
   }
 
-  //returning logged in user
- public getLoggedInUser():Observable<LoggedInUser>{
-    if(!this.isAuthenticated()){
-      sessionStorage.clear();
-      this.setLoggedInUser(new LoggedInUser());
-  }
-   return this.subject.asObservable();
-  
-}
- 
-//function for setting above behavior subject
-private setLoggedInUser(object:LoggedInUser){
-  if(object!=null){
-  this.subject.next(object);
+  /* this method checks only if token is present (no validation) */
+  /* token verification in django is robust enough to handle any problem */
+  /* data is always safe */
+public static hasToken(){
 
-  }
-
-
-  
-}
-//check token expiry
-  private isAuthenticated():boolean {
-  const token=sessionStorage.getItem('token');
+  const token=localStorage.getItem('token');
   if(token==null || token==undefined){
   return false;}
-  return !this.jwtHelper.isTokenExpired(token);
+
+  return true;
+
+}
+
+/* these methods set values for above loginStatus */
+  getLoginStatus():Observable<Boolean>{
+
+    return this.loginStatus.asObservable();
   }
 
+  setLoginStatus(loginStatus:Boolean){
+    this.loginStatus.next(loginStatus);
+  }
    
+
    private handleError(error: HttpErrorResponse) {
      
-     console.log("handling error.......")
     if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
+      /* A client-side or network error occurred. */
+
       console.error('An error occurred:', error.error.message);
       return throwError('client side Error: '+error.error.message);
     } else {
       console.error(
         `Backend returned code: ${error.status}, ` +
-        `body was:${error.error.detail},`+//invalid credintials return {'global':......}
+        `body was:${error.error.detail},`+//invalid credintials return {'detail':......}
         
         `message was: ${error.message}` );
-      if(error.status==400)
-        return throwError("invalid crediantials....try again!!!");
         
           if(error.status==0)
           return throwError("could not connect to server.Check your internet connection!!!");
@@ -76,6 +74,8 @@ private setLoggedInUser(object:LoggedInUser){
         return throwError(error.error.detail);
 }};
  
+
+/* this request on successfull completion returns a token */
   public login(LoginUser):Observable<HttpResponse<any>>{
     this.spinner.add();
     if(LoginUser!=null){
@@ -87,24 +87,31 @@ private setLoggedInUser(object:LoggedInUser){
   }
 
  
+  /* here,we clear out local storage and set value for loginStatus */
   public logout() {
-    //clearing session storage and setting default values in behavior subject
-    sessionStorage.clear();
-    this.setLoggedInUser(new LoggedInUser());
+
+    localStorage.clear();
+    this.setLoginStatus(false);
+    this.shareUser.setLoggedInUser(new User(new Profile()));
     
 }
  
+/* this method decodes token and reads foll. properties:'is_staff (admin) and 'exp' (expire time of token) */
    public updateData() {
 
-    this.errors = [];
-    //don't use local storage as it is not secure
-    // decode the token to read the user_id,is_staff and expiration timestamp
-    const tokenPayload=decode(sessionStorage.getItem("token"));
-    const is_staff:boolean=tokenPayload["is_staff"];
+    
+    const tokenPayload=decode(localStorage.getItem("token"));
+    const is_staff:Boolean=tokenPayload["is_staff"];
     const expiration=new Date(tokenPayload["exp"]*1000);
-    const user_id=tokenPayload["user_id"];
-    this.setLoggedInUser({"user_id":user_id,"is_staff":is_staff,"expiration":expiration,"loginStatus":true})
+    
+    localStorage.setItem('exp',JSON.stringify(expiration));
+    localStorage.setItem('is_staff',JSON.stringify(is_staff));//access admin comp.
+
+    this.setLoginStatus(true);
   }
+
+
+  /* get user from server:token is added in header by auth-interceptor before this requests processes */
 
   getUser():Observable<HttpResponse<User>>{
     this.spinner.add();

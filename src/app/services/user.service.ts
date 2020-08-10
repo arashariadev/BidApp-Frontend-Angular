@@ -46,7 +46,7 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
     this.spinner.add();
 
     if(username!=null){
-      return this.http.delete<User>(this.url+username+'/',{headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
+      return this.http.delete<any>(this.url+username+'/',{headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
           catchError(this.handleError)
         )
     }
@@ -98,7 +98,6 @@ updateUserByAdmin(user:User):Observable<HttpResponse<User>>{
         if(error.status==0)
         return throwError("could not connect to server.Check your internet connection!!!");
         else{
-          console.log("hello")
         return throwError(error.error.detail);}
         
 

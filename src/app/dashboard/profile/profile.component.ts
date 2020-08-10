@@ -15,27 +15,35 @@ declare let Email: any;
   `]
 })
 export class ProfileComponent implements OnInit {
-  //to store user details
+  
+  /* to store user details */
   user:User
+
+  /* to update profile only if user clicks on 'update profile' button */
+
   public show_update_form:boolean=false;
+  /* to store profile image object:it's an object containing image */
   public image_object:ProfileImage; 
   
   constructor(private authService:AuthService,private router:Router,private route:ActivatedRoute,private shareUser:ShareUserService,
     private userService:UserService,private spinner:SpinnerService) { }
 
+
   ngOnInit(): void {
     //getting complete user from this service-->returns behavior subject 'user'
-      this.shareUser.getUser().subscribe(resp=>{
+      this.shareUser.getLoggedInUser().subscribe(resp=>{
         this.user=resp;
       });
+
       this.shareUser.getProfileImage().subscribe(resp=>{
         this.image_object=resp;
-        console.log(JSON.stringify(this.image_object));
-      })
+        
+      });
+
   }
 
 
-
+/* after user clicks on 'update profile' button */
   updateProfile(){
 
     this.show_update_form=true;
@@ -46,36 +54,27 @@ export class ProfileComponent implements OnInit {
   user_request(username,request_type){
     let value:string;
     if(request_type==='bid'){
-      alert("bid request processing");
+      alert("this fuctionality is yet to be added");
       value="bidder";
     }
     else
     if(request_type==='auction'){
-      alert("auction request processing");
+      alert("this fuctionality is yet to be added");
       value="auctioneer";
-    }
-//sending email
-    Email.send({
-      Host : "smtp.elasticemail.com",
-      Username : "pie99954@gmail.com",
-      Password : "7D2959372FBB172F93194EECAEB0ABFF622A",
-      To : 'sunilpie1997@gmail.com',
-      From : "pie99954@gmail.com",
-      Subject : "Bid_app",
-      Body : username+" wants to be a "+value
-  }).then(
-
-    message => {alert(message);
-    console.log("email sent")}
-  );
+    } 
   }
-//to again fetch profile from http sot that user doesn't need to reload
-//new user details if present will be stored in behavior subject so that all components receive same details.
+
+/* functionality to send email to user :yet to be added */
+
+//to again fetch profile from http sot that user doesn't need to reload or login again
+
   refreshProfile(){
+
     this.authService.getUser().subscribe(resp=>{
     this.spinner.remove();
-    alert("refreshed");
-      this.shareUser.setUser(resp.body);
+    alert("refreshed your profile");
+
+    this.shareUser.setLoggedInUser(resp.body);
   }
     ,error=>{
       this.spinner.remove();

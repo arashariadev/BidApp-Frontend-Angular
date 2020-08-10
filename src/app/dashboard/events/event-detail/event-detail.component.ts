@@ -25,6 +25,7 @@ export class EventDetailComponent implements OnInit {
   event:BidEvent=null;
 
   is_staff:boolean=false;
+
   can_bid:boolean=false;//if current datetime is between start date and end date of event
 
   is_bidder:boolean=false;
@@ -39,9 +40,7 @@ export class EventDetailComponent implements OnInit {
 
   constructor(private router:Router,private route:ActivatedRoute,private shareEvent:ShareEventService,
     private authService:AuthService,private shareUser:ShareUserService,private bidService:BidService,private eventService:EventService,
-     private spinner:SpinnerService) {
-  console.log("event detail:"+this.event);
-   }
+     private spinner:SpinnerService) {}
   
   ngOnInit(): void {
 
@@ -61,20 +60,33 @@ export class EventDetailComponent implements OnInit {
         this.event=val.filter(x=>x.id==this.event_id)[0];
 
         if(this.event!=null){//callback that is executed only after receiving event details
-          this.authService.getLoggedInUser().subscribe(resp=>this.is_staff=resp["is_staff"])
+          
+          /* this.authService.getLoggedInUser().subscribe(resp=>this.is_staff=resp["is_staff"])*/
+          this.authService.getLoginStatus().subscribe(resp=>{
+
+            if(resp){
+
+              this.is_staff=JSON.parse(localStorage.getItem("is_staff"));
+            }
+          });
+          /* get current datetime */
 
           const current_datetime=Date.now()
+          /* get start date of event converted in milliseconds since epoch */
           const parsed_start_date=this.parse_date(this.event.start_date);//converts in milliseconds since epoch
+          /* same for deadline of event */
           const parsed_deadline=this.parse_date(this.event.deadline);
 
+          /* checks whether current time lies between startdate and deadline:to take bid */
        if(current_datetime>=parsed_start_date && current_datetime<parsed_deadline){
 
+        /* it means user can bid for an event provided he's a bidder */
        this.can_bid=true;
+
        //getting 'is_bidder' property of currently logged in user
-      this.shareUser.getUser().subscribe(val=>this.is_bidder=val.profile["is_bidder"]    )
-      //will tell if user is admin
-      console.log(this.is_bidder+" "+this.can_bid)
-       }
+      this.shareUser.getLoggedInUser().subscribe(val=>this.is_bidder=val.profile["is_bidder"]);
+                                                                                  }
+
         }
       
       }
@@ -82,12 +94,13 @@ export class EventDetailComponent implements OnInit {
     });
 
   }
-  //delete event option for admin
+
+  /* delete event option for admin */
+
   deleteEvent(){
     let answer=confirm("are you sure want to delete?");
 
     if(answer){
-      console.log("in event component"+this.event_id)
 
     this.eventService.deleteEventByAdmin(this.event_id).subscribe(resp=>
       {   this.spinner.remove(); 
@@ -98,16 +111,18 @@ export class EventDetailComponent implements OnInit {
     }
   }
 
+  /* if user wants to bid */
   onClick(){
     this.take_bid=true;
   }
 
-  validate_bid(){
+
+/* validate bid  */
+validate_bid(){
 if(this.user_bidprice>=this.event.base_price && this.user_bidprice<=100000000){
 
 const current_datetime=new Date();
 //storing time at which bid was placed -->for validation on server side
-console.log(current_datetime)
 
 let bid=new Bid(this.user_bidprice,current_datetime);
 //send bid
@@ -133,7 +148,7 @@ this.take_bid=false;
     this.router.navigate(['../'],{relativeTo:this.route});
   }
   
-  
+  /* get current highest bid */
   getHighestBid(){
     this.bidService.retrieveHighestBid(this.event_id).subscribe(resp=>
       {

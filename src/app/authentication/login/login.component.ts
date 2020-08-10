@@ -4,7 +4,6 @@ import {Router} from '@angular/router';
 import {ActivatedRoute} from '@angular/router';
 import { User } from '@app/classes/user';
 import { ShareUserService } from '@app/services/share-user.service';
-import { Profile } from '@app/classes/profile';
 import { UserService } from '@app/services/user.service';
 import { SpinnerService } from '@app/services/spinner.service';
 @Component({
@@ -12,14 +11,17 @@ import { SpinnerService } from '@app/services/spinner.service';
   templateUrl: './login.component.html',
   styles: [``]
 })
+
 export class LoginComponent implements OnInit {
 
-  //to store username and password of user while login
+  /* to store username and password of user while login */
  public LoginUser;
- //represents current logged in user-->null if no one
- public username:string;;
+
+ /* represents current logged in user-->null if no one */
+ public username:string=null;
+
  //represents if anyone is logged in?
-  public loginStatus:boolean=false;
+  public loginStatus:Boolean=false;
 
 
   constructor(private authService: AuthService,public router:Router,public route:ActivatedRoute,
@@ -27,11 +29,14 @@ export class LoginComponent implements OnInit {
    }
   
   ngOnInit() {
-    this.authService.getLoggedInUser().subscribe(resp=>{
-      this.loginStatus=resp["loginStatus"];
+
+    /* get latest value of loginStatus from authService */
+    this.authService.getLoginStatus().subscribe(resp=>{
+      this.loginStatus=resp;
       
     });
     
+    /* initialise values for login form */
     if(!this.loginStatus){
     this.LoginUser = {
       username: null,
@@ -40,31 +45,31 @@ export class LoginComponent implements OnInit {
   
   }
   //getting user details from 'user' behavior subject-->returns null if no one------
-  this.shareUser.getUser().subscribe(resp=>this.username=resp["username"]);
+  this.shareUser.getLoggedInUser().subscribe(resp=>this.username=resp["username"]);
   
   }
 
-  //ngDestroy() to prevent memory leak due to Behaviour subject
+  
   
   login() {
-    console.log("login()")
-    this.authService.login({'username': this.LoginUser.username, 'password': this.LoginUser.password}).subscribe(
-    //clearing out session storage
     
+    this.authService.login({'username': this.LoginUser.username, 'password': this.LoginUser.password}).subscribe(
       resp=>{
         this.spinner.remove();
         this.LoginUser = {//extra protection
           username: null,
           password: null
         };
-        sessionStorage.clear();//extra protection
-        //storing access token received in session storage
-        sessionStorage.setItem('token',resp.body["access"]);
+        /* clear out local storage first */
+        localStorage.clear();
 
-      this.authService.updateData();
-      //getting user profile after login---
-      this.getUserFromHttp();
-      //getting user profile image from amazon aws
+        //storing access token received in local storage
+        localStorage.setItem('token',resp.body["access"]);
+   
+        /* getting user profile from server:token is send in header */
+        this.getUserFromHttp();
+
+      /* getting user profile image from amazon aws */
       this.getProfileImage();
 
     },
@@ -72,10 +77,9 @@ export class LoginComponent implements OnInit {
         this.spinner.remove();
       alert(error);
       
-     
-      });
+            });
   
-     //alert user about status
+     /* alert user about status */
     if(this.loginStatus){
         alert("logged in successfully!!!!");
             }
@@ -88,8 +92,7 @@ export class LoginComponent implements OnInit {
   logout() {
     this.authService.logout();
     alert("logged out successfully!!!!!");
-    //setting null value in 'user' behavior subject after logout
-    this.shareUser.setUser(new User(new Profile()))//update behavior subject containing user
+   
     this.router.navigate(['../events'],{relativeTo:this.route});
   }
  
@@ -98,16 +101,23 @@ export class LoginComponent implements OnInit {
   goToRegister(){
 this.router.navigate(['../register'],{relativeTo:this.route})
   }
+
   goToProfile(){
     this.router.navigate(['../profile'],{relativeTo:this.route})
   }
 
 
   getUserFromHttp(){
+
+     /* to get token paylaod and read 'exp' and 'is_staff' value from token */
+     this.authService.updateData();
+
+
     this.authService.getUser().subscribe(resp=>
     {let user:User=resp.body;
-      //setting new user received in behavior subject 'user'
-      this.shareUser.setUser(user);
+
+      /* setting new user received in behavior subject 'user' */
+      this.shareUser.setLoggedInUser(user);
       this.spinner.remove();},
       error=>{
         this.spinner.remove();

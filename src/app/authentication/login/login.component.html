@@ -1,7 +1,7 @@
     <div class="container">
     <div class="container-fluid">
 <!--if no user is cuurently logged in-->
-    <div *ngIf="!loginStatus">
+    <div *ngIf="loginStatus==false">
 
       <h2>Log In</h2>
       <hr>
@@ -28,9 +28,9 @@
   
     </div>
     <!--if user is currently logged in -->
-    <div class="container-fluid" *ngIf="loginStatus" >
+    <div class="container-fluid" *ngIf="loginStatus==true" >
       <div class="container"><h2>You are logged in as {{username}} </h2><br />
-        <!--Token Expires: {{ authService.token_expires }}<br />-->
+        
         <button (click)="logout()" class="btn btn-primary">Log Out</button>
         <button (click)="goToProfile()" class="btn btn-primary">View Profile</button>      
       </div>

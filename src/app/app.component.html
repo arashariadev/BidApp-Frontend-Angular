@@ -8,7 +8,7 @@
   <div  class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       
-      <ng-container *ngIf="!logged_in_user['loginStatus']">
+      <ng-container *ngIf="loginStatus==false">
       <li class="nav-item" >
         <a routerLink="/login" class="nav-link navbar-brand mb-0 h1 active">Login</a>  
     </li>
@@ -17,7 +17,7 @@
       </li>
     </ng-container>
     <!--if user is logged in -->
-    <ng-container  *ngIf="logged_in_user['loginStatus']">
+    <ng-container  *ngIf="loginStatus==true">
 
       <li class="nav-item active" >
         <span class="nav-link navbar-brand mb-0 h1 active" >Welcome {{user.username}}</span>
@@ -47,7 +47,7 @@
     <form class="form-inline my-2 my-lg-0">
 
       <a routerLink="/admin" ><span class="nav-link navbar-brand mb-0 h1 active">Admin</span></a>
-      <span class="nav-link navbar-brand mb-0 h1 active">{{logged_in_user["expiration"]|date:'medium'}}</span>
+      <span class="nav-link navbar-brand mb-0 h1 active">{{expiration|date:'medium'}}</span>
       <input class="form-control mr-sm-2" type="search" placeholder="search to reload events" aria-label="Search">
       <button class="btn btn-secondary my-2 my-sm-0" (click)="refreshEvents()">Search</button>
       

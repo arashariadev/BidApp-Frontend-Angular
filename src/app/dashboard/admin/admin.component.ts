@@ -20,6 +20,7 @@ public username:string=null;
 public user:User;
 public error:string;
 public is_staff:boolean=false;
+
   constructor(private userService:UserService,private shareUser:ShareUserService,private spinner:SpinnerService) {
     this.user=new User(new Profile());
    }
@@ -28,6 +29,7 @@ public is_staff:boolean=false;
   
   }
 
+  /* when admin searches for particular user */
   onSearch(){
     this.updateTable=false;
     //getting user from http request
@@ -66,11 +68,5 @@ deleteUser(){
 
 }}
 
-//admin cannot delete himself--hard coding
-isAdmin(){
-  if(this.user.username==="sunilpie")
-  return true;
-  else
-  return false;
-}
+
 }

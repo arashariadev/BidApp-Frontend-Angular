@@ -12,27 +12,27 @@ import { SpinnerService } from '@app/services/spinner.service';
   styles: [``]
 })
 export class RegisterComponent implements OnInit {
-//store registered user
+
   user:NewUser;
   constructor(private authService:AuthService,private registerService:RegisterService,private router:Router,private route:ActivatedRoute,
     private spinner:SpinnerService) {
    }
 
   ngOnInit(): void {
-//initialising with default null values-->see constructor of user 
+
+/* for register user form */ 
     this.user=new NewUser(new Profile());
-                 
-    
   }
+
+/* when user submits form */
 
 onSubmit(){
   this.registerService.registerUser(this.user).subscribe(resp=>
   {this.spinner.remove();
-    if(resp.status==201){
+    
       //if user is created
       alert("you have registered successfully");
-  this.router.navigate(['../login',],{relativeTo:this.route});}
-  },
+  this.router.navigate(['../login',],{relativeTo:this.route});},
   error=>{this.spinner.remove();
    alert(error)});
 }

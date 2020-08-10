@@ -22,6 +22,7 @@ public want_to_update:boolean=false;
   this.shareUser.getProfileImage().subscribe(resp=>this.image_object=resp);
   }
 
+  /* when user selects image for upload */
   onFileSelect(event) {
     if (event.target.files.length > 0) {
 
@@ -44,8 +45,8 @@ public want_to_update:boolean=false;
   
     if(!this.is_error && this.imagefile!=null){
       let filename=this.imagefile.name;
-      console.log(filename)
-
+      
+      /* new instance of formData containing iamge to be send */
       let formData:FormData=new FormData();
       formData.append('file',this.imagefile);
   this.userService.updateProfileImage(formData,filename).subscribe(resp=>
@@ -60,6 +61,7 @@ public want_to_update:boolean=false;
 
   }
 
+  /* if user clicks on 'edit photo' image   */
     updateProfileImage(){
       this.want_to_update=true;
     }

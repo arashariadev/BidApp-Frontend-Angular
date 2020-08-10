@@ -1,0 +1,6 @@
+changes to be done :
+
+1)proper flow of authentication and maintaining user session.
+2)canActivate in routes
+3)delete commented extra code in auth.service.ts
+4)register as bidder and auctioneer...send email

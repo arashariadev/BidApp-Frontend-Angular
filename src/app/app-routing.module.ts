@@ -20,11 +20,11 @@ const routes: Routes = [
   {'path':'',redirectTo:'/events',pathMatch:'full'},
   {'path':'register',component:RegisterComponent},
   {'path':'login',component:LoginComponent},
-  {'path':'admin',component:AdminComponent,canActivate:[AdminGuardService]},
+  {'path':'admin',component:AdminComponent,canActivate:[AuthGuardService,AdminGuardService]},
   {'path':'profile',component:ProfileComponent,canActivate:[AuthGuardService]},
   {'path':'profile/image',component:ProfileImageComponent,canActivate:[AuthGuardService]},
   {'path':'events',component:EventListComponent},
-  {'path':'create-event',component:EventCreateComponent,canActivate:[CanAuctionGuardService]},
+  {'path':'create-event',component:EventCreateComponent,canActivate:[AuthGuardService,CanAuctionGuardService]},
   {'path':'events/:id',component:EventDetailComponent},
   {'path':'**',component:PageNotFoundComponent}]
 

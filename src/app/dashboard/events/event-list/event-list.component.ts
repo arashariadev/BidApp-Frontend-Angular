@@ -11,6 +11,8 @@ import { ShareEventService } from '@app/services/share-event.service';
 export class EventListComponent implements OnInit {
 
  public eventList:BidEvent[]=[];
+
+ /* contains all events initially (before user applies any filter */
  public filtered_set:BidEvent[]=[];
  public filter_date:Date=null;
   constructor(private eventService:EventService,public shareEvent:ShareEventService) { 

@@ -1,4 +1,4 @@
-import { Component,OnInit, OnDestroy } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import {AuthService} from '@app/services/auth.service';
 import {Router} from '@angular/router';
 import {ActivatedRoute} from '@angular/router';
@@ -16,10 +16,11 @@ import { SpinnerService } from './services/spinner.service';
   styles: [``]
 })
 export class AppComponent implements OnInit{
-  public logged_in_user:LoggedInUser;
+  public loginStatus:Boolean=false;
   private event_list:BidEvent[]=[];
   public user:User;
   spinner_status:Boolean;
+  public expiration:Date=null;
 
   constructor(public router:Router,public route:ActivatedRoute,public authService:AuthService,private eventService:EventService,
     public shareEvent:ShareEventService,private shareUser:ShareUserService,private spinner:SpinnerService) {
@@ -30,13 +31,21 @@ export class AppComponent implements OnInit{
     
   ngOnInit() {
     
-//getting all event list from http
+     /* getting all event list from server when app.component loades */
     this.getAllEvents();
 
-    this.authService.getLoggedInUser().subscribe(resp=>{
-      this.logged_in_user=resp;
+    /* checks if user is logged in :from behavior subject */
+
+    this.authService.getLoginStatus().subscribe(resp=>{
+      this.loginStatus=resp;
+
+      if(this.loginStatus){/* get token expiry time from local storage */
+        this.expiration=JSON.parse(localStorage.getItem('exp'));
+      }
     });
-   this.shareUser.getUser().subscribe(resp=>this.user=resp);
+
+    /* get user from share-user.service */
+   this.shareUser.getLoggedInUser().subscribe(resp=>this.user=resp);
    }
 
    
@@ -44,30 +53,29 @@ export class AppComponent implements OnInit{
      this.router.navigate(['profile'])
    }
 
-   ngDestroy(){
-   }
+   
    
    goToEvents(){
      this.router.navigate(['/events'],{relativeTo:this.route})
    }
 
    getAllEvents(){
-  //receiving all events and storing in behavior subject.
+  /* receiving all events and storing in behavior subject. */
+
     this.eventService.getEventList().subscribe(resp=>{
 
       this.spinner.remove();
       console.log(typeof resp.body.results);
-      console.log("received events from http");
-     this.event_list=resp.body.results;
-     this.shareEvent.setShareEvents(this.event_list);},
+      this.event_list=resp.body.results;
+      this.shareEvent.setShareEvents(this.event_list);},
     error=>{
     alert(error);
    this.spinner.remove(); 
   });
     
   }
-  //new events if any,  are stored in above behavior subject...user needs to click search for this
-  //event to take place
+  
+  /*  afetr click on 'search' button,new events are loaded from server */
   refreshEvents(){
     console.log("refreshing.............");
     this.getAllEvents();
