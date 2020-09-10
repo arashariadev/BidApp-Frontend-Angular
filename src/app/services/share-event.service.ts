@@ -20,9 +20,13 @@ private shareEvents=new BehaviorSubject<BidEvent[]>([]);
     this.shareEvents.next(events);
     
   }
+
+
   //function for receiving event array
   getShareEvents(){
     return this.shareEvents.asObservable();
   }
 
+
+  
 }

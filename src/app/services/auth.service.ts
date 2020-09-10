@@ -25,29 +25,35 @@ export class AuthService {
   private loginStatus=new BehaviorSubject<Boolean>(AuthService.hasToken());
 
  
-  constructor(private http: HttpClient,private restapi:RestApiServerService,private spinner:SpinnerService,
+  constructor(private http: HttpClient,private restapi:RestApiServerService,
     private shareUser:ShareUserService) {
     this.url=restapi.path;
   }
 
-  /* this method checks only if token is present (no validation) */
-  /* token verification in django is robust enough to handle any problem */
-  /* data is always safe */
-public static hasToken(){
+  /*  this method checks only if token is present (no validation) 
+      token verification in django is robust enough to handle any problem
+      data is always safe 
+  */
 
-  const token=localStorage.getItem('token');
-  if(token==null || token==undefined){
-  return false;}
+  public static hasToken(){
 
-  return true;
+    const token=localStorage.getItem('token');
+    if(token==null || token==undefined)
+    
+        return false;
+
+    return true;
 
 }
+
 
 /* these methods set values for above loginStatus */
   getLoginStatus():Observable<Boolean>{
 
     return this.loginStatus.asObservable();
   }
+
+
 
   setLoginStatus(loginStatus:Boolean){
     this.loginStatus.next(loginStatus);
@@ -75,13 +81,14 @@ public static hasToken(){
 }};
  
 
+
 /* this request on successfull completion returns a token */
   public login(LoginUser):Observable<HttpResponse<any>>{
-    this.spinner.add();
+    
     if(LoginUser!=null){
-    return this.http.post(this.url+'auth/login/', JSON.stringify(LoginUser),{headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
+      return this.http.post(this.url+'auth/login/', JSON.stringify(LoginUser),{headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(
   
-  catchError(this.handleError)
+    catchError(this.handleError)
     );}
       
   }
@@ -114,7 +121,6 @@ public static hasToken(){
   /* get user from server:token is added in header by auth-interceptor before this requests processes */
 
   getUser():Observable<HttpResponse<User>>{
-    this.spinner.add();
 
   return this.http.get<User>(this.url+'user/',
   {headers: new HttpHeaders({'Content-Type': 'application/json'}),observe:'response'}).pipe(

@@ -3,7 +3,7 @@ import { User } from '@app/classes/user';
 import { Profile } from '@app/classes/profile';
 import { ShareUserService } from '@app/services/share-user.service';
 import { UserService } from '@app/services/user.service';
-import { SpinnerService } from '@app/services/spinner.service';
+
 
 @Component({
   selector: 'app-admin',
@@ -12,8 +12,10 @@ import { SpinnerService } from '@app/services/spinner.service';
   `]
 })
 export class AdminComponent implements OnInit {
-  //show user details table?
+
+//show user details table?
 public showTable:boolean=false;
+
 //show user update table?
 public updateTable=false;
 public username:string=null;
@@ -21,7 +23,7 @@ public user:User;
 public error:string;
 public is_staff:boolean=false;
 
-  constructor(private userService:UserService,private shareUser:ShareUserService,private spinner:SpinnerService) {
+  constructor(private userService:UserService,private shareUser:ShareUserService) {
     this.user=new User(new Profile());
    }
 
@@ -29,23 +31,30 @@ public is_staff:boolean=false;
   
   }
 
+
   /* when admin searches for particular user */
   onSearch(){
-    this.updateTable=false;
-    //getting user from http request
-    this.userService.getUserByUsername(this.username).subscribe(resp=>{
-      this.spinner.remove();
-      this.user=resp.body
-    this.showTable=true;//table is displayed on successfully receiving user
+
+      this.updateTable=false;
+      //getting user from http request
+      this.userService.getUserByUsername(this.username).subscribe(resp=>
+        {
+          this.user=resp.body;
+          this.showTable=true;//table is displayed on successfully receiving user
     
-  },error=>{
-    this.spinner.remove();
-    this.error=error;
-    alert(error);})
+        }
+        ,error=>
+          {
+            
+            this.error=error;
+            alert(error);
+          })
   }
 
 
+
 onClickUpdateUser(){
+
   alert("are you sure!!!");
   this.updateTable=true;//update table is shown
   this.showTable=false;//show table is hidden
@@ -54,17 +63,20 @@ onClickUpdateUser(){
 
 
 deleteUser(){
-  let answer=confirm("are you sure want to delete the user");//:))
-  if(answer){
-  this.userService.deleteUserByAdmin(this.username).subscribe(resp=>{
-    this.spinner.remove();
-    if(resp.status==204){
-      alert("user deleted");
-    }
-  },error=>{
-    this.spinner.remove();
-    console.log(error);
-  alert("error:"+error);})
+  let answer=confirm("are you sure want to delete the user");
+
+  if(answer)
+  {
+    this.userService.deleteUserByAdmin(this.username).subscribe(resp=>
+      {
+        
+      if(resp.status==204){
+        alert("user deleted");
+      }
+    },
+    error=>{
+  
+      alert("error:"+error);})
 
 }}
 

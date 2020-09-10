@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Profile } from '@app/classes/profile';
 import { ProfileImage } from '@app/classes/profile-image';
 
+
 @Injectable()
 
 export class ShareUserService {
@@ -22,9 +23,9 @@ export class ShareUserService {
   public static getUserFromLS():User{
 
     let old_user=JSON.parse(localStorage.getItem("user"));
-    if(old_user!=undefined && old_user!=null){
-    return old_user;
-    }
+    if(old_user!=undefined && old_user!=null)
+      return old_user;
+    
     return new User(new Profile());
   } 
 
@@ -33,6 +34,7 @@ export class ShareUserService {
 
     return this.user.asObservable();
   }
+
 
 
   setLoggedInUser(user:User){
@@ -50,5 +52,7 @@ setProfileImage(profileImage:ProfileImage){
 
   this.profileImage.next(profileImage);
 }
+
+
 
 }

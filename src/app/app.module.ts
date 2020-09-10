@@ -11,7 +11,6 @@ import {RestApiServerService} from '@app/services/rest-api-server.service';
 //need to be injected-->add in providers array
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthTokenInterceptor } from '@app/services/auth-interceptor';
-import { SpinnerService } from './services/spinner.service';
 import { ShareUserService } from './services/share-user.service';
 
 @NgModule({
@@ -28,7 +27,6 @@ import { ShareUserService } from './services/share-user.service';
   ],
   providers: [
     RestApiServerService,
-    SpinnerService,
     ShareUserService,
     {
       provide: HTTP_INTERCEPTORS,

@@ -1,25 +1,30 @@
     <div class="container">
-    <div class="container-fluid">
-<!--if no user is cuurently logged in-->
-    <div *ngIf="loginStatus==false">
+      <div class="container-fluid">
 
-      <h2>Log In</h2>
-      <hr>
-      <form #loginform="ngForm" (ngSubmit)="login()">
-        <div class="form-group">
-        <label for="username_id">Username:</label>
-        <input type="text" name="login-username" required  #login_uname="ngModel" id="username_id" class="form-control" [(ngModel)]="LoginUser.username">
-        <div *ngIf="login_uname.touched && login_uname.errors" class="text-danger">Username is required</div>
-      </div>
-      <div class="form-group">
-        <label for="password_id">Password:</label>
-        <input type="password" name="login-password" required  #login_pass="ngModel" id="password_id" class="form-control" [(ngModel)]="LoginUser.password">
-        <div *ngIf="login_pass.touched && login_pass.errors" class="text-danger">Password is required</div>
+        <!--if no user is cuurently logged in-->
+        <div *ngIf="loginStatus==false">
 
-      </div>
+          <h2>Log In</h2>
+          <hr>
+        
+          <form #loginform="ngForm" (ngSubmit)="login()">
+          
+            <div class="form-group">
+              <label for="username_id">Username:</label>
+              <input type="text" name="login-username" required  #login_uname="ngModel" id="username_id" class="form-control" [(ngModel)]="LoginUser.username">
+              <div *ngIf="login_uname.touched && login_uname.errors" class="text-danger">Username is required</div>
+            </div>
+      
+            <div class="form-group">
+            <label for="password_id">Password:</label>
+            <input type="password" name="login-password" required  #login_pass="ngModel" id="password_id" class="form-control" [(ngModel)]="LoginUser.password">
+            <div *ngIf="login_pass.touched && login_pass.errors" class="text-danger">Password is required</div>
+
+            </div>
     
-        <button [disabled]="loginform.form.invalid" type="submit" class="btn btn-primary">Log In</button>
-      </form>
+            <button [disabled]="loginform.form.invalid" type="submit" class="btn btn-primary">Log In</button>
+      
+          </form>
     
      <!-----------------Register ->if no one is currently logged in---------------->
      <hr>
@@ -27,13 +32,18 @@
      <button class="btn btn-primary" (click)="goToRegister()">Register</button>
   
     </div>
+
+
     <!--if user is currently logged in -->
     <div class="container-fluid" *ngIf="loginStatus==true" >
+    
       <div class="container"><h2>You are logged in as {{username}} </h2><br />
         
         <button (click)="logout()" class="btn btn-primary">Log Out</button>
         <button (click)="goToProfile()" class="btn btn-primary">View Profile</button>      
+    
       </div>
     </div>
-    </div>
+    
+  </div>
   </div>

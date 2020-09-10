@@ -5,9 +5,11 @@ import { User } from '@app/classes/user';
 import { ShareUserService } from '@app/services/share-user.service';
 import { ProfileImage } from '@app/classes/profile-image';
 import { UserService } from '@app/services/user.service';
-import { SpinnerService } from '@app/services/spinner.service';
 import {environment } from 'environments/environment.prod';
+
+
 declare let Email: any;
+
 
 @Component({
   selector: 'app-profile',
@@ -16,6 +18,7 @@ declare let Email: any;
   `]
 })
 export class ProfileComponent implements OnInit {
+
   
   /* to store user details */
   user:User
@@ -23,20 +26,25 @@ export class ProfileComponent implements OnInit {
   /* to update profile only if user clicks on 'update profile' button */
 
   public show_update_form:boolean=false;
+  
   /* to store profile image object:it's an object containing image */
   public image_object:ProfileImage; 
   
   constructor(private authService:AuthService,private router:Router,private route:ActivatedRoute,private shareUser:ShareUserService,
-    private userService:UserService,private spinner:SpinnerService) { }
+    private userService:UserService) { }
 
 
-  ngOnInit(): void {
-    //getting complete user from this service-->returns behavior subject 'user'
-      this.shareUser.getLoggedInUser().subscribe(resp=>{
-        this.user=resp;
-      });
+  
+    ngOnInit(): void {
+  
+      //getting complete user from this service-->returns behavior subject 'user'
+      
+      this.shareUser.getLoggedInUser().subscribe(resp=>
+        {
+          this.user=resp;
+        });
 
-      this.shareUser.getProfileImage().subscribe(resp=>{
+        this.shareUser.getProfileImage().subscribe(resp=>{
         this.image_object=resp;
         
       });
@@ -51,6 +59,7 @@ export class ProfileComponent implements OnInit {
   }
 
 
+
 //take request from user to be abidder and auctioneer
   user_request(username,request_type){
     let value:string;
@@ -61,7 +70,7 @@ export class ProfileComponent implements OnInit {
     if(request_type==='auction'){
       value="auctioneer";
     }
-    this.spinner.add();
+    
     Email.send({
       Host : "smtp.elasticemail.com",
       Username :"pie99954@gmail.com",
@@ -72,7 +81,7 @@ export class ProfileComponent implements OnInit {
       Body : `${username} wants to be a ${value}`
   }).then(
     message => {
-      this.spinner.remove();
+      
       if(message==='OK'){
         alert("email has been sent to admin.ThankYou");
       }
@@ -85,7 +94,7 @@ export class ProfileComponent implements OnInit {
 
   emailErrorResp(){
     alert("email could not be sent.Check internet connection");
-   this.spinner.remove();
+   
   }
 
 /* functionality to send email to user :yet to be added */
@@ -94,20 +103,20 @@ export class ProfileComponent implements OnInit {
 
   refreshProfile(){
 
-    this.authService.getUser().subscribe(resp=>{
-    this.spinner.remove();
-    alert("refreshed your profile");
-    let user:User=resp.body;
-    this.shareUser.setLoggedInUser(user);
-    localStorage.setItem("user",JSON.stringify(user));
-  }
-    ,error=>{
-      this.spinner.remove();
-      alert(error);});
+    this.authService.getUser().subscribe(resp=>
+      {
+        
+      alert("refreshed your profile");
+      
+      let user:User=resp.body;
+      this.shareUser.setLoggedInUser(user);
+      localStorage.setItem("user",JSON.stringify(user));
+      }
+    ,error=>
+      alert(error));
 
-    this.userService.getProfileImage().subscribe(resp=>{
+      this.userService.getProfileImage().subscribe(resp=>{
   
-      this.spinner.remove();
       this.shareUser.setProfileImage(resp.body);
     })
   }

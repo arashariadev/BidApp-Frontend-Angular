@@ -28,13 +28,18 @@ const routes: Routes = [
   {'path':'events/:id',component:EventDetailComponent},
   {'path':'**',component:PageNotFoundComponent}]
 
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-//all components generated are stored in this array to prevent reimporting of all modules....
-//this array is imported in app.modules.ts
+
+
+
+/*all components generated are stored in this array to prevent reimporting of all modules....
+  this array is imported in app.modules.ts
+*/
 
 export const RoutingComponent=[RegisterComponent,
   LoginComponent,

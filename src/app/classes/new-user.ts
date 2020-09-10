@@ -9,15 +9,17 @@ export class NewUser {
     public email:string;
     public profile:Profile;
     public confirm_password?:string;
-constructor(
-    profile:Profile,
-    username:string=null,
-    first_name:string=null,
-    password:string=null,
-    last_name:string=null,
-    email:string=null,
-    confirm_password?:string
-     ){
+
+    constructor(
+        profile:Profile,
+        username:string=null,
+        first_name:string=null,
+        password:string=null,
+        last_name:string=null,
+        email:string=null,
+        confirm_password?:string
+     )
+     {
 
         this.username=username;
         this.first_name=first_name;

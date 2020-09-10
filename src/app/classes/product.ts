@@ -1,13 +1,15 @@
 export class Product {
 
-                public name:string;
-               public category:string;
-               public description:string;
+            public name:string;
+            public category:string;
+            public description:string;
 
-    constructor(name:string=null,
+            constructor(
+                name:string=null,
                 category:string=null,
-               description:string=null,
-               ){
+                description:string=null,
+               )
+               {
 
                 this.category=category;
                 this.description=description;

@@ -11,7 +11,7 @@ import { EventService } from '@app/services/event.service';
 import { User } from '@app/classes/user';
 import { Profile } from '@app/classes/profile';
 import { ProductImage } from '@app/classes/product-image';
-import { SpinnerService } from '@app/services/spinner.service';
+
 
 @Component({
   selector: 'app-event-detail',
@@ -38,31 +38,35 @@ export class EventDetailComponent implements OnInit {
   highest_bid:number=null;
   highest_bid_user:User=new User(new Profile());
 
+
   constructor(private router:Router,private route:ActivatedRoute,private shareEvent:ShareEventService,
-    private authService:AuthService,private shareUser:ShareUserService,private bidService:BidService,private eventService:EventService,
-     private spinner:SpinnerService) {}
-  
+    private authService:AuthService,private shareUser:ShareUserService,private bidService:BidService,private eventService:EventService) {}
+
+    
+
   ngOnInit(): void {
 
     //initialising with default values
     this.event=new BidEvent(new Product(),new ProductImage);
 
-//obtaining event_id from route parameters
-    this.route.paramMap.subscribe((params:ParamMap)=>{
-      let id=parseInt(params.get('id'));
-      this.event_id=id;
+    //obtaining event_id from route parameters
+      this.route.paramMap.subscribe((params:ParamMap)=>
+      {
+        let id=parseInt(params.get('id'));
+        this.event_id=id;
     });
 
     //obtaining event with given event_id from service providing 'events array'
-    this.shareEvent.getShareEvents().subscribe(val=>{
+    this.shareEvent.getShareEvents().subscribe(val=>
+      {
 
-      if(val.length!=0){
-        this.event=val.filter(x=>x.id==this.event_id)[0];
+        if(val.length!=0){
+          this.event=val.filter(x=>x.id==this.event_id)[0];
 
-        if(this.event!=null){//callback that is executed only after receiving event details
+          if(this.event!=null){//callback that is executed only after receiving event details
           
-          /* this.authService.getLoggedInUser().subscribe(resp=>this.is_staff=resp["is_staff"])*/
-          this.authService.getLoginStatus().subscribe(resp=>{
+            /* this.authService.getLoggedInUser().subscribe(resp=>this.is_staff=resp["is_staff"])*/
+            this.authService.getLoginStatus().subscribe(resp=>{
 
             if(resp){
 
@@ -97,68 +101,86 @@ export class EventDetailComponent implements OnInit {
 
   /* delete event option for admin */
 
-  deleteEvent(){
+  deleteEvent()
+  {
     let answer=confirm("are you sure want to delete?");
 
-    if(answer){
+    if(answer)
+    {
 
-    this.eventService.deleteEventByAdmin(this.event_id).subscribe(resp=>
-      {   this.spinner.remove(); 
-        alert("successfully deleted")},error=>{
-          this.spinner.remove();
-          alert(error);
+      this.eventService.deleteEventByAdmin(this.event_id).subscribe(resp=>
+        {   
+          alert("successfully deleted")},
+          error=>{
+            alert(error);
         });
     }
   }
 
+
   /* if user wants to bid */
-  onClick(){
+  onClick()
+  {
     this.take_bid=true;
   }
 
 
 /* validate bid  */
-validate_bid(){
-if(this.user_bidprice>=this.event.base_price && this.user_bidprice<=100000000){
+validate_bid()
+{
+  if(this.user_bidprice>=this.event.base_price && this.user_bidprice<=100000000){
 
-const current_datetime=new Date();
+  const current_datetime=new Date();
 //storing time at which bid was placed -->for validation on server side
 
-let bid=new Bid(this.user_bidprice,current_datetime);
-//send bid
-this.bidService.place_bid(bid,this.event.id).subscribe(resp=>
-  {   this.spinner.remove(); 
-    alert("bid successfully placed")},error=>
-  {  this.spinner.remove();  
-    alert(error);});
+  let bid=new Bid(this.user_bidprice,current_datetime);
+  
+  //send bid
+  this.bidService.place_bid(bid,this.event.id).subscribe(resp=>
+  
+    {   
+      alert("bid successfully placed")}
+      ,error=>
+    {  
+      alert(error);});
 
-this.take_bid=false;
-  }
+    this.take_bid=false;
+    }
 
     else
-    this.is_error=true;
+      this.is_error=true;
     
   }
 
-  parse_date(date:Date):number{
+
+
+  parse_date(date:Date):number
+  {
     return new Date(date).getTime();//returns milliseconds since epoch
   }
 
-  goBack(){
+ 
+ 
+  goBack()
+  {
     this.router.navigate(['../'],{relativeTo:this.route});
   }
   
+
   /* get current highest bid */
   getHighestBid(){
     this.bidService.retrieveHighestBid(this.event_id).subscribe(resp=>
       {
-        this.spinner.remove();
         this.highest_bid=resp.body["highest_bid"];
-    this.highest_bid_user=resp.body["user"];
-    },error=>
-    {  this.spinner.remove();
-      alert(error);
-    })
+        this.highest_bid_user=resp.body["user"];
+      },
+      error=>
+    
+        alert(error)
+    )
   }
+
+
+
 
 }
